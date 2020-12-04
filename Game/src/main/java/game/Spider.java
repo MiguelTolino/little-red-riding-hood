@@ -24,5 +24,9 @@ public class Spider extends AbstractGameObject {
     public Spider(JSONObject obj) {
         super(obj);
     }
+    
+    public void printSpider() {
+        System.out.println(this.toJSONObject().toString());
+    }
 
 }

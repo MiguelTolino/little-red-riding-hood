@@ -25,4 +25,8 @@ public class Blossom extends AbstractGameObject {
         super(obj);
     }
 
+    public void printBlossom() {
+        System.out.println(this.toJSONObject().toString());
+    }
+
 }

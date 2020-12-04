@@ -24,9 +24,9 @@ public class Fly extends AbstractGameObject {
     public Fly(JSONObject obj) {
         super(obj);
     }
-    
-        public JSONObject toJSONObject() {
-        return null;     
+
+    public void printFly() {
+        System.out.println(this.toJSONObject().toString());
     }
 
 }
