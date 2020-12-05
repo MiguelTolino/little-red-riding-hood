@@ -12,6 +12,6 @@ import org.json.JSONObject;
  * @author japf
  */
 public interface IToJsonObject {
-    String TYPE_LABEL = "GIT_type";
+    public static final String TypeLabel = "GIT_type";
     JSONObject toJSONObject();
 }

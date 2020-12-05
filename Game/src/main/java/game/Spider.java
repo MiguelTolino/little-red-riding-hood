@@ -11,22 +11,29 @@ import org.json.JSONObject;
  *
  * @author juanangel
  */
-public class Spider extends AbstractGameObject {
-
-    public Spider() {
-        super();
+public class Spider extends AbstractGameObject{
+    
+    public Spider(){}
+    
+    public Spider(Position position) {
+        super(position);    
     }
-
-    public Spider(Position position, int value, int life) {
-        super(position, value, life);
-    }
-
-    public Spider(JSONObject obj) {
-        super(obj);
+      
+    public Spider(Position position, int value){
+        super(position, value, 1);
     }
     
-    public void printSpider() {
-        System.out.println(this.toJSONObject().toString());
+    public Spider(Position position, int value, int life){
+        super(position, value, life);
     }
-
+    
+    public Spider(JSONObject obj){
+        super(obj);
+    }   
+    
+    public void printSpider(){
+        System.out.println(this.toJSONObject());
+    }
+           
 }
+

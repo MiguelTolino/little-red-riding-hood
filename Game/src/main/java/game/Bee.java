@@ -12,21 +12,27 @@ import org.json.JSONObject;
  * @author juanangel
  */
 public class Bee extends AbstractGameObject {
-
-    public Bee() {
-        super();
+    
+    public Bee(){}
+    
+    public Bee(Position position) {
+        super(position);    
     }
-
-    public Bee(Position position, int value, int life) {
+      
+    public Bee(Position position, int value){
+        super(position, value, 1);
+    }
+    
+    public Bee(Position position, int value, int life){
         super(position, value, life);
     }
-
-    public Bee(JSONObject obj) {
+    
+    public Bee(JSONObject obj){
         super(obj);
-    }
-
-    public void printBee() {
-        System.out.println(this.toJSONObject().toString());
+    }    
+    
+    public void printBee(){
+        System.out.println(this.toJSONObject());
     }
 
 }

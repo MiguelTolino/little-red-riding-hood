@@ -7,26 +7,32 @@ package game;
 
 import org.json.JSONObject;
 
+
 /**
  *
  * @author juanangel
  */
-public class Fly extends AbstractGameObject {
-
-    public Fly() {
-        super();
+public class Fly extends AbstractGameObject{
+    
+    public Fly(){}
+    
+    public Fly(Position position) {
+        super(position);    
     }
-
-    public Fly(Position position, int value, int life) {
+      
+    public Fly(Position position, int value){
+        super(position, value, 1);
+    }
+    
+    public Fly(Position position, int value, int life){
         super(position, value, life);
     }
-
-    public Fly(JSONObject obj) {
+    
+    public Fly(JSONObject obj){
         super(obj);
+    }   
+    
+    public void printFly(){
+        System.out.println(this.toJSONObject());
     }
-
-    public void printFly() {
-        System.out.println(this.toJSONObject().toString());
-    }
-
 }

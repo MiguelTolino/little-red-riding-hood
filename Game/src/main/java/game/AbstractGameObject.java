@@ -14,45 +14,62 @@ import org.json.JSONObject;
  *
  * @author juanangel
  */
-public abstract class AbstractGameObject implements IGameObject, IToJsonObject {
-
-    protected Position position;
+public abstract class AbstractGameObject implements IGameObject, IToJsonObject{
+    
+    protected Position position;  
     int value;
-    int lifes = 1;
+    int lifes = 1;    
     int mode = 0;
-
-    public AbstractGameObject() {
+        
+    public AbstractGameObject(){
         position = new Position();
     }
-
-    public AbstractGameObject(Position position) {
+    
+    public AbstractGameObject(Position position){
         this.position = position;
     }
-
-    public AbstractGameObject(Position position, int value, int life) {
+    
+    public AbstractGameObject(Position position, int value){
+        this.position = position;
+        this.value = value;
+    }
+    
+    public AbstractGameObject(Position position, int value, int life){
         this(position);
         this.value = value;
         this.lifes = life;
     }
-
-    public AbstractGameObject(JSONObject obj) {
-
-        this.lifes = obj.getInt("lifes");
-//        this.position = positionPosition (obj.get("position"));
-        this.value = obj.getInt("value");
-        //this.mode = obj.getInt("mode");
+    
+    public AbstractGameObject(JSONObject obj){
+        String type = obj.getString(IToJsonObject.TypeLabel);
+        if (type.compareTo(getClass().getSimpleName()) != 0){
+            throw new JSONException("Incompatible argument");
+        }
+        
+        value = obj.getInt("value");
+        lifes = obj.getInt("lifes");
+        mode = obj.getInt("mode");
+        
+        position = new Position (obj.getJSONObject("position"));        
     }
-
+    
+    
     @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + ", "
-                + position
-                + ", value: " + value + ", lifes: " + lifes + ", mode: " + mode;
+    public String toString(){
+        return this.getClass().getSimpleName() + ", " + 
+               position + 
+               ", value: " + value + ", lifes: " + lifes + ", mode: " + mode;
     }
-
+    
     @Override
     public JSONObject toJSONObject() {
-        return (new JSONObject(this));
+        JSONObject jObj = new JSONObject();
+        jObj.put(IToJsonObject.TypeLabel, this.getClass().getSimpleName());
+        jObj.put("value", this.value);
+        jObj.put("lifes", this.lifes);
+        jObj.put("mode", this.mode);
+        jObj.put("position", this.position.toJSONObject());
+        return jObj;     
     }
 
     @Override
@@ -62,13 +79,13 @@ public abstract class AbstractGameObject implements IGameObject, IToJsonObject {
 
     @Override
     public void setPosition(Position position) {
-        this.position = position;
+        this.position = position;       
     }
-
-    @Override
-    public Position moveToNextPosition() {
-        return position;
-    }
+    
+     @Override
+    public Position moveToNextPosition(){
+        return position;       
+    }  
 
     @Override
     public int getValue() {
@@ -89,44 +106,53 @@ public abstract class AbstractGameObject implements IGameObject, IToJsonObject {
     public void incLifes(int value) {
         lifes += value;
     }
-
+    
     @Override
-    public void setGameMode(int mode) {
+    public void setGameMode(int mode){
         this.mode = mode;
     }
-
-    public static double distance(Position p1, Position p2) {
-        double distance;
-        distance = Math.sqrt(Math.pow((double)(p2.getX() - p1.getX()), 2) + Math.pow((double)(p2.getY() - p1.getY()), 2));
-        return (distance);
-    }
-
-    public static double getDistance(IGameObject jObj1, IGameObject jObj2) {
-        double distance = distance(jObj1.getPosition(), jObj2.getPosition());
-        return distance;
-    }
-
-    public static IGameObject getClosest(Position p, IGameObject jObjs[]) {
-        int obj = 0;
-        double distance = Double.MAX_VALUE;
-        for (int i = 0; i < jObjs.length ; i++) {
-            double d = distance(p, jObjs[i].getPosition());
-            if(d < distance) {
-                distance = d;
-                obj = i;
-            }
+    
+   
+    // p4, con junit
+    public static double distance(Position p1, Position p2){
+        
+        if (p1 == null || p2 == null){
+            return 0;
         }
-        if (distance == Double.MAX_VALUE)
-            return null;
-        return (jObjs[obj]);
+        
+        int dx = p1.x - p2.x;
+        int dy = p1.y - p2.y;
+        return Math.sqrt(dx*dx + dy*dy);        
     }
-
-    public static IGameObject getClosest(IGameObject jObj, IGameObject jObjs[]) {
-        IGameObject gObj = getClosest(jObj.getPosition(), jObjs);
-        return gObj;
+     
+    
+    // p4 con junit
+    public static double getDistance(IGameObject jObj1, IGameObject jObj2){
+        return distance(jObj1.getPosition(), jObj2.getPosition());        
     }
     
-    public void printGameObject() {
-        System.out.println(this.toJSONObject().toString());
+    public static IGameObject getClosest(Position p, IGameObject jObjs []){
+
+        if (jObjs == null || jObjs.length == 0){
+            return null;
+        }
+                
+        IGameObject closest = jObjs[0];
+        double minD = distance(p, closest.getPosition());
+        
+        for(IGameObject b: jObjs){
+            double d = distance(p, b.getPosition());
+            if (d < minD){
+                closest = b;
+                minD = d;
+            }
+        }        
+        return closest;        
+    }       
+    
+    public static IGameObject getClosest(IGameObject jObj, IGameObject jObjs []){
+        return getClosest(jObj.getPosition(), jObjs);
     }
+    
+    
 }

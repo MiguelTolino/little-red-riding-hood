@@ -39,7 +39,7 @@ public class Position implements IToJsonObject {
     }
     
     public Position(JSONObject jObj){
-       String type = jObj.getString(IToJsonObject.TYPE_LABEL);
+       String type = jObj.getString(IToJsonObject.TypeLabel);
         if (type.compareTo(getClass().getSimpleName()) != 0){
             throw new JSONException("Incompatible argument");
         }
@@ -76,7 +76,7 @@ public class Position implements IToJsonObject {
     @Override
     public JSONObject toJSONObject() {
         JSONObject jObj = new JSONObject();
-        jObj.put(IToJsonObject.TYPE_LABEL, this.getClass().getSimpleName());
+        jObj.put(IToJsonObject.TypeLabel, this.getClass().getSimpleName());
         jObj.put("x", this.x);
         jObj.put("y", this.y);
         return jObj;    

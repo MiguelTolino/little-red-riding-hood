@@ -11,6 +11,9 @@ package game;
  * @author japf
  */
 public interface IGameObject {
+        
+    // Position.
+    // public String getId();
     
     // Position.
     public Position getPosition();
