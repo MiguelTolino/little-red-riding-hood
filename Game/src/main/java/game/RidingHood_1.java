@@ -13,72 +13,62 @@ import org.json.JSONObject;
  */
 public class RidingHood_1 extends AbstractGameObject {
 
-    private Blossom[] blossoms;
-
-    public RidingHood_1() {
-    }
-
-    public RidingHood_1(Position position) {
-        super(position);
-    }
-
-    public RidingHood_1(Position position, int value) {
-        super(position, value, 1);
-    }
-
-    public RidingHood_1(Position position, int value, int life) {
-        super(position, value, life);
-    }
-
-    public RidingHood_1(JSONObject obj) {
-        super(obj);
-    }
-
-    public RidingHood_1(Position position, int value, int life, Blossom[] blossoms) {
-        super(position, value, life);
-        this.blossoms = blossoms;
-
-    }
-
-    private void moveDiagonal() {
-        int x = position.getX() + 1;
-        int y = position.getY() + 1;
-
-        position.setX(x);
-        position.setY(y);
-    }
-
-    private void approachTo(Position p) {
-
-        int x = position.getX();
-        int y = position.getY();
-
-        if (x < p.getX()) {
-            x++;
-        }
-        if (x > p.getX()) {
-            x--;
-        }
-        if (y > p.getY()) {
-            y--;
-        }
-        if (y < p.getY()) {
-            y++;
-        }
-        position.setX(x);
-        position.setY(y);
-    }
+    Blossom[] blossoms;
+    int blossomCounter = 0;
     
 
-    public Position moveToNextPosition() {
-        Position p;
-        for (int i = 0; i < blossoms.length; i++) {
-            Blossom b = (Blossom)getClosest(position, blossoms);
-            while(!position.isEqual(b.getPosition()))
-                this.approachTo(b.getPosition());
-        }
-        moveDiagonal();
-        p = position;
-        return (p);
+    RidingHood_1(Position position) {
+        super(position);    
     }
+    
+    RidingHood_1(Position position, int value, int life ) {
+        super(position, value, life);    
+    }
+    
+    RidingHood_1(JSONObject jObj) {
+        super(jObj);    
+    }
+     
+    RidingHood_1(Position position, int value, int life, Blossom [] blossoms) {
+        super(position, value, life);   
+        this.blossoms = blossoms;
+    }    
+    
+    /**
+     * Cada vez que se invoca se dirige hacia el blossom más cercano, 
+     * moviéndose una posición en x y otra en y.
+     * Cuando ha pasado por todos los blossoms avanza en diagonal 
+     * hacia abajo a las derecha.
+     * @return posición en la que se encuentra después de ejecutarse el
+     * método.
+     */
+    @Override
+    public Position moveToNextPosition(){
+                
+        if (blossoms != null && blossoms.length != 0 && blossomCounter < blossoms.length){
+                approachTo(blossoms[blossomCounter].position);
+                if (position.isEqual(blossoms[blossomCounter].position)){
+                    blossomCounter++;
+                }
+        }
+        else if (position.x < 10 && position.y < 10){
+             moveDiagonal();
+        }
+        System.out.println(position);        
+        return position;       
+    }  
+    
+    private void moveDiagonal(){
+        position.x++;
+        position.y++;
+    }
+    
+    private void approachTo(Position p){
+        if (position.x != p.x){
+            position.x = position.x > p.x? position.x-1:position.x+1;
+        }
+        if (position.y != p.y){
+            position.y = position.y > p.y? position.y-1:position.y+1;
+        }
+    }    
 }

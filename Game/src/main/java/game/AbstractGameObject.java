@@ -29,11 +29,6 @@ public abstract class AbstractGameObject implements IGameObject, IToJsonObject{
         this.position = position;
     }
     
-    public AbstractGameObject(Position position, int value){
-        this.position = position;
-        this.value = value;
-    }
-    
     public AbstractGameObject(Position position, int value, int life){
         this(position);
         this.value = value;
@@ -111,7 +106,6 @@ public abstract class AbstractGameObject implements IGameObject, IToJsonObject{
     public void setGameMode(int mode){
         this.mode = mode;
     }
-    
    
     // p4, con junit
     public static double distance(Position p1, Position p2){
@@ -131,7 +125,8 @@ public abstract class AbstractGameObject implements IGameObject, IToJsonObject{
         return distance(jObj1.getPosition(), jObj2.getPosition());        
     }
     
-    public static IGameObject getClosest(Position p, IGameObject jObjs []){
+    // p7
+        public static IGameObject getClosest(Position p, IGameObject jObjs []){
 
         if (jObjs == null || jObjs.length == 0){
             return null;
@@ -150,9 +145,7 @@ public abstract class AbstractGameObject implements IGameObject, IToJsonObject{
         return closest;        
     }       
     
-    public static IGameObject getClosest(IGameObject jObj, IGameObject jObjs []){
+    public static IGameObject getClosest(IGameObject jObj, IGameObject jObjs []) {
         return getClosest(jObj.getPosition(), jObjs);
     }
-    
-    
 }

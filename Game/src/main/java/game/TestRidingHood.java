@@ -6,7 +6,6 @@
 package game;
 
 import common.FileUtilities;
-import java.io.IOException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,14 +22,16 @@ public class TestRidingHood {
      */
     public static void testConstructorAndToJson(){
         
-        RidingHood_1 r1 = new RidingHood_1(new Position(3, 3), 2, 5);
-        RidingHood_1 r2 = new RidingHood_1(new Position(2, 2), 1, 1);
-        
-        System.out.println(r1.toJSONObject().toString());
-        System.out.println(r2.toJSONObject().toString());
-        
         System.out.println("testConstructorAndToJson");
         
+        RidingHood_1 b1 = new RidingHood_1(new Position(1,1));
+        JSONObject jObj = b1.toJSONObject();
+        RidingHood_1 b2 = new RidingHood_1(jObj);
+        System.out.println(b1);
+        System.out.println(b2);
+        System.out.println(b1.toJSONObject());
+        System.out.println(b2.toJSONObject());
+        System.out.println("-----------------------------------------------");
     }
     
     /**
@@ -47,6 +48,10 @@ public class TestRidingHood {
         
         // Array para guardar posiciones trayectoria objeto RidingHood
         Position trace[] = new Position[n];
+        for (int i = 0; i < trace.length; i++){
+           trace[i] = new Position();
+        }
+        
         // Invocamos moveToNextPosition sobre el último objeto
         // RidingHood creado un número de veces sudiciente para
         // pasar por todos los blossoms.
@@ -70,32 +75,33 @@ public class TestRidingHood {
         
         System.out.println("testSaveAndLoad");
         
-        JSONObject [] jObjs = new JSONObject[trace.length];
         // Guardamos las posiciones por las que ha pasado el objeto RidingHood 
         // en formato JSON en un fichero.
-        for (int i = 0; i <  trace.length; i++)
-            jObjs[i] = new JSONObject(trace[i]);
-        FileUtilities.writeJsonsToFile(jObjs, fileName);
-        // TO DO
+        JSONObject jPositions [] = new JSONObject[trace.length];
+        for (int i = 0; i < trace.length; i++){
+            if (trace[i] != null){
+                jPositions[i] = trace[i].toJSONObject();
+            }
+        }
+        FileUtilities.writeJsonsToFile(jPositions, fileName);
          
         // Leer posiciones guardadas en el fichero anterior y mostrarlas
         // en consola.
-        try {
-        FileUtilities.readJsonsFromFile(fileName);
-        }
-        catch (IOException io) {
-            io.printStackTrace();
-        }
-        // TO DO.
+        JSONArray jArray = FileUtilities.readJsonsFromFile(fileName);
         
+        for(int i = 0; i < jArray.length(); i++){
+            System.out.println(jArray.get(i).toString());
+        }
         System.out.println("-----------------------------------------------");
     }
     
     
     public static void main(String [] args){
         
+        // Ejercicio 2.1 ....................................................................
         testConstructorAndToJson();
 
+        // Ejercicio 2.2 Invocación constructor con array de blossoms .......................
         // Crear array de Blossoms
         Blossom blossoms[] = {new Blossom(new Position(1,1)),
                        new Blossom(new Position(6,1)),
@@ -106,13 +112,14 @@ public class TestRidingHood {
                        new Blossom(new Position(1,4))
                       };        
         // Crear nuevo objeto RidingHood pasándole el array de blossoms.
-        RidingHood_1 r3 = new RidingHood_1(new Position(1, 1), 3, 2, blossoms);
+        IGameObject b = new RidingHood_1(new Position(1,1), 0, 0, blossoms);
         
-        Position [] traces = testMoveToNextPosition(r3, blossoms, 20);
-        for (Position p: traces)
-            System.out.println(p.toString());
-        FileUtilities.createDirectory("src/main/resources/tests");
-        //Invocar testSaveAndLoad sobre el directorio creado
-        testSaveAndLoad("src/main/resources/jsons/traces", traces);
+        // Ejercicio 2.5 .....................................................................
+        Position trace [] = testMoveToNextPosition(b, blossoms, 40);
+        
+        // Ejercicio 2.6 .....................................................................
+        // Create directory for saveing test results if it does not exist.
+        FileUtilities.crearDirectorio("src/main/resources/tests");
+        testSaveAndLoad("src/main/resources/tests/traces.txt", trace);       
     }       
 }
