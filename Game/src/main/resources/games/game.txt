@@ -1,0 +1,4 @@
+{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":2,"y":1},"value":10}
+{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":2,"y":4},"value":5}
+{"mode":0,"lifes":1,"GIT_type":"Spider","position":{"GIT_type":"Position","x":7,"y":4},"value":5}
+{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":7,"y":8},"value":10}

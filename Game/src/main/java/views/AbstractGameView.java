@@ -17,6 +17,15 @@ public abstract class AbstractGameView implements IAWTGameView{
     IGameObject gObj;
     int length = 20;
     
+    //String id;
+    //private static Integer viewCounter = 0;
+    
+    /*
+    public AbstractGameView(){
+        this(new Blossom(), 20);
+    }
+    */
+    
     public AbstractGameView(IGameObject obj, int length) throws Exception {
         
         if (obj != null){
@@ -26,5 +35,11 @@ public abstract class AbstractGameView implements IAWTGameView{
             throw new Exception();
         }
         this.length = length;
+    }
+    
+    /*
+    public void setEdgeLength(int length){
+        this.length = length;
     }  
+    */
 }

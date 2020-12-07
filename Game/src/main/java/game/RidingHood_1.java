@@ -5,6 +5,9 @@
  */
 package game;
 
+import common.FileUtilities;
+import java.util.ArrayList;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -13,7 +16,7 @@ import org.json.JSONObject;
  */
 public class RidingHood_1 extends AbstractGameObject {
 
-    Blossom[] blossoms;
+    ArrayList<Blossom> blossoms = new ArrayList<>();
     int blossomCounter = 0;
     
 
@@ -29,13 +32,13 @@ public class RidingHood_1 extends AbstractGameObject {
         super(jObj);    
     }
      
-    RidingHood_1(Position position, int value, int life, Blossom [] blossoms) {
+    RidingHood_1(Position position, int value, int life, ArrayList<Blossom> blossoms) {
         super(position, value, life);   
         this.blossoms = blossoms;
     }    
     
     /**
-     * Cada vez que se invoca se dirige hacia el blossom más cercano, 
+     * Cada vez que se invoca se dirige hacia el siguiente blossom, 
      * moviéndose una posición en x y otra en y.
      * Cuando ha pasado por todos los blossoms avanza en diagonal 
      * hacia abajo a las derecha.
@@ -45,9 +48,9 @@ public class RidingHood_1 extends AbstractGameObject {
     @Override
     public Position moveToNextPosition(){
                 
-        if (blossoms != null && blossoms.length != 0 && blossomCounter < blossoms.length){
-                approachTo(blossoms[blossomCounter].position);
-                if (position.isEqual(blossoms[blossomCounter].position)){
+        if (blossoms != null && blossoms.size() != 0 && blossomCounter < blossoms.size()){
+                approachTo(blossoms.get(blossomCounter).position);
+                if (position.isEqual(blossoms.get(blossomCounter).position)){
                     blossomCounter++;
                 }
         }
