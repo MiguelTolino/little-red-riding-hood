@@ -5,6 +5,7 @@
  */
 package game;
 
+import common.FileUtilities;
 import guis.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,16 +24,21 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import views.AbstractGameView;
 
 /**
  *
  * @author juanangel
  */
-public class GameEditor_2 extends JFrame implements KeyListener {
+public class GameEditor_3 extends JFrame implements KeyListener {
 
     public static final int UP_KEY = 38;
     public static final int DOWN_KEY = 40;
@@ -50,12 +56,17 @@ public class GameEditor_2 extends JFrame implements KeyListener {
     JPanel canvasFrame, south_panel, button_panel;
     JLabel positionLabel;
     JButton b1, b2, b3;
-    IGameObject[] gArray;
+    AbstractGameObject[] gArray;
     int g_counter;
+    String path = "src/main/resources/games/game.txt";
+    JMenuBar menuBar;
+    JMenu menuFile;
+    JMenuItem itSave, itLoad;
+    JButton clear;
 
-    public GameEditor_2() throws Exception {
+    public GameEditor_3() throws Exception {
 
-        super("Game Editor v2");
+        super("Game Editor v3");
 
         positionLabel = new JLabel("[" + col + ", " + row + "]");
         positionLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -89,15 +100,46 @@ public class GameEditor_2 extends JFrame implements KeyListener {
         south_panel.add(button_panel);
         getContentPane().add(south_panel, BorderLayout.SOUTH);
 
+        menuBar = new JMenuBar();
+        menuFile = new JMenu("File");
+        itSave = new JMenuItem("Save");
+        itLoad = new JMenuItem("Load");
+
+        menuFile.add(itSave);
+        menuFile.add(itLoad);
+        menuBar.add(menuFile);
+        setJMenuBar(menuBar);
+
+        itSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JSONObject[] json = new JSONObject[gArray.length];
+                for (int i = 0; i < gArray.length; i++) {
+                    json[i] = gArray[i].toJSONObject();
+                }
+                FileUtilities.writeJsonsToFile(json, path);
+            }
+        });
+
+        itLoad.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JSONArray jArray = new JSONArray();
+                jArray = FileUtilities.readJsonsFromFile(path);
+                //TODO: Pasar a JSONObject y guardar, mostrar
+            }
+        });
+
+        b1.addActionListener(new EventManager());
+        b2.addActionListener(new EventManager());
+        b3.addActionListener(new EventManager());
+
         setSize(CANVAS_WIDTH + 40, CANVAS_WIDTH + 80);
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         addKeyListener(this);
-        b1.addActionListener(new EventManager());
-        b2.addActionListener(new EventManager());
-        b3.addActionListener(new EventManager());
         System.out.println(this.getFocusableWindowState());
         this.setFocusable(true);
     }
@@ -197,10 +239,11 @@ public class GameEditor_2 extends JFrame implements KeyListener {
             this.objects = objs; // actualiza los objetos a representar por el canvas
             repaint(); // fuerza el repintado del canvas.
         }
-        
+
         private void drawGameItems(Graphics g) {
-            for(IGameObject objs: objects)
+            for (IGameObject objs : objects) {
                 paintComponent(g);
+            }
         }
 
     }
@@ -215,7 +258,7 @@ public class GameEditor_2 extends JFrame implements KeyListener {
             }
             JButton event = (JButton) e.getSource();
             if (event.getText().equals("Clover")) {
-                gArray[g_counter] = new Blossom();
+                gArray[g_counter] = new Blossom(new Position(2, 2));
             }
             if (event.getText().equals("Dandelion")) {
                 gArray[g_counter] = new Bee();
@@ -255,6 +298,6 @@ public class GameEditor_2 extends JFrame implements KeyListener {
     }
 
     public static void main(String[] args) throws Exception {
-        GameEditor_2 gui = new GameEditor_2();
+        GameEditor_3 gui = new GameEditor_3();
     }
 }
