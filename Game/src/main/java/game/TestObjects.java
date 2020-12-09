@@ -6,6 +6,7 @@
 package game;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import org.json.JSONObject;
 
 /**
@@ -82,27 +83,27 @@ public class TestObjects {
     }
     
     public static void testDistances(){
-        IGameObject gObjs [] = {
-            new Fly(new Position(0,0)),
-            new Blossom(new Position(1,0)),
-            new Bee(new Position(1,1)),
-            new Spider(new Position(1,2))
-        };
+        ArrayList<IGameObject> gObjs = new ArrayList<>();
+        gObjs.add(new Fly(new Position(0,0)));
+        gObjs.add(new Blossom(new Position(1,0)));
+        gObjs.add(new Bee(new Position(1,1)));
+        gObjs.add(new Spider(new Position(1,2)));
+
         DecimalFormat form = new DecimalFormat();
         form.setMaximumFractionDigits(2); 
         
         System.out.println("Showing distances matrix using distance method");
-        for(int i = 0; i < gObjs.length; i++){
-            for(int j = 0; j < gObjs.length; j++){
-                System.out.print(form.format(AbstractGameObject.distance(gObjs[i].getPosition(), gObjs[j].getPosition())) + "\t");
+        for(IGameObject gObjA: gObjs){
+            for(IGameObject gObjB: gObjs){
+                System.out.print(form.format(AbstractGameObject.distance(gObjA.getPosition(), gObjB.getPosition())) + "\t");
             }
             System.out.println();
         }
         System.out.println("-----------------------------------------");
         System.out.println("Showing distances matrix using getDistance method");
-        for(int i = 0; i < gObjs.length; i++){
-            for(int j = 0; j < gObjs.length; j++){
-                System.out.print(form.format(AbstractGameObject.getDistance(gObjs[i], gObjs[j])) + "\t");
+        for(IGameObject gObjA: gObjs){
+            for(IGameObject gObjB: gObjs){
+                System.out.print(form.format(AbstractGameObject.getDistance(gObjA, gObjB)) + "\t");
             }
             System.out.println();
         }
@@ -120,23 +121,21 @@ public class TestObjects {
             new Spider(new Position(1,2))
         };
         
-        for(int i = 0; i < gObjs.length; i++){
-             System.out.print("Position --> " + gObjs[i].getPosition() + "  JSON ---> ");
-             if (gObjs[i] instanceof Blossom){
-                 ((Blossom) gObjs[i]).printBlossom();
+        for(IGameObject gObj: gObjs){
+             System.out.print("Position --> " + gObj.getPosition() + "  JSON ---> ");
+             if (gObj instanceof Blossom){
+                 ((Blossom) gObj).printBlossom();
              }
-             else if (gObjs[i] instanceof Bee){
-                 ((Bee) gObjs[i]).printBee();
+             else if (gObj instanceof Bee){
+                 ((Bee) gObj).printBee();
              }
-             else if (gObjs[i] instanceof Fly){
-                 ((Fly) gObjs[i]).printFly();
+             else if (gObj instanceof Fly){
+                 ((Fly) gObj).printFly();
              }
-             else if (gObjs[i] instanceof Spider){
-                 ((Spider) gObjs[i]).printSpider();
-             }
-             
-        }
-        
+             else if (gObj instanceof Spider){
+                 ((Spider) gObj).printSpider();
+             }    
+        } 
     }
     
     public static void main(String [] args){

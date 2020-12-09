@@ -27,8 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import views.IAWTGameView;
-import views.VNumberedBox;
-import views.VNumberedCircle;
+import views.boxes.VNumberedBox;
+import views.boxes.VNumberedCircle;
 
 /**
  *

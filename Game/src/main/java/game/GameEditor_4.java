@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -41,7 +42,7 @@ import views.boxes.VNumberedCircle;
  *
  * @author juanangel
  */
-public class GameEditor_3 extends JFrame implements KeyListener {
+public class GameEditor_4 extends JFrame implements KeyListener {
     
     public static final int UP_KEY    = 38;
     public static final int DOWN_KEY  = 40;
@@ -61,7 +62,7 @@ public class GameEditor_3 extends JFrame implements KeyListener {
     JButton btAddClover, btAddDandelion, btAddSpider, btClear;
     
     // Declare array of IGameObject and objects counter
-    IGameObject gameObjects [] = new IGameObject [4];
+    ArrayList<IGameObject> gameObjects = new ArrayList<>();
     int itemsCounter;
     
     // Declare File menu and Save and Load items
@@ -71,7 +72,7 @@ public class GameEditor_3 extends JFrame implements KeyListener {
     JMenuItem itSave, itLoad;
 
     
-    public GameEditor_3() throws Exception{
+    public GameEditor_4() throws Exception{
 
         super("Game Editor v3");
        
@@ -83,15 +84,9 @@ public class GameEditor_3 extends JFrame implements KeyListener {
                 @Override
                 public void actionPerformed(ActionEvent ae){
                     System.out.println("Clover selected");
-                    if (itemsCounter < gameObjects.length){
-                        gameObjects[itemsCounter] = new Blossom(new Position(col, row), 10, 1);
-                        itemsCounter++;
-                        printGameItems();
-                        canvas.drawGameItems(gameObjects);
-                    }
-                    else {
-                        System.out.println("Clover can not be added: too many objects");
-                    }
+                    gameObjects.add(new Blossom(new Position(col, row), 10, 1));
+                    printGameItems();
+                    canvas.drawGameItems(gameObjects);
                     requestFocusInWindow();
                 }
             }
@@ -103,15 +98,9 @@ public class GameEditor_3 extends JFrame implements KeyListener {
                 @Override
                 public void actionPerformed(ActionEvent ae){
                     System.out.println("Dandelion selected");
-                    if (itemsCounter < gameObjects.length){
-                        gameObjects[itemsCounter] = new Blossom(new Position(col, row), 5, 1);
-                        itemsCounter++;
-                        printGameItems(); 
-                        canvas.drawGameItems(gameObjects);
-                    }
-                    else {
-                        System.out.println("Dandelion can not be added: too many objects");
-                    }
+                    gameObjects.add(new Blossom(new Position(col, row), 5, 1));
+                    printGameItems();
+                    canvas.drawGameItems(gameObjects);
                     requestFocusInWindow();
                 }
             }
@@ -123,15 +112,9 @@ public class GameEditor_3 extends JFrame implements KeyListener {
                 @Override
                 public void actionPerformed(ActionEvent ae){
                     System.out.println("Spider selected");
-                    if (itemsCounter < gameObjects.length){
-                        gameObjects[itemsCounter] = new Spider(new Position(col, row), 5, 1);
-                        itemsCounter++;
-                        printGameItems(); 
-                        canvas.drawGameItems(gameObjects);
-                    }
-                    else {
-                        System.out.println("Spider can not be added: too many objects");
-                    }
+                    gameObjects.add(new Spider(new Position(col, row), 5, 1));
+                    printGameItems();
+                    canvas.drawGameItems(gameObjects);
                     requestFocusInWindow();
                 }
             }
@@ -143,11 +126,7 @@ public class GameEditor_3 extends JFrame implements KeyListener {
                 @Override
                 public void actionPerformed(ActionEvent ae){
                     System.out.println("Cleaning all.");
-                    for (int i = 0; i < gameObjects.length; i++){
-                        gameObjects[i] = null;
-                        itemsCounter = 0;
-                    }
-                    printGameItems(); 
+                    gameObjects.clear();
                     canvas.drawGameItems(gameObjects);
                     requestFocusInWindow();
                 }
@@ -167,9 +146,9 @@ public class GameEditor_3 extends JFrame implements KeyListener {
                 public void actionPerformed(ActionEvent ae){
                     System.out.println("Saving objects");
                     if (gameObjects != null){
-                        JSONObject jObjs [] = new JSONObject[gameObjects.length];
+                        JSONObject jObjs [] = new JSONObject[gameObjects.size()];
                         for(int i = 0; i < jObjs.length; i++){
-                            jObjs[i] = ((IToJsonObject)gameObjects[i]).toJSONObject();
+                            jObjs[i] = ((IToJsonObject)gameObjects.get(i)).toJSONObject();
                         }
                         FileUtilities.writeJsonsToFile(jObjs, path);
                     }
@@ -185,16 +164,11 @@ public class GameEditor_3 extends JFrame implements KeyListener {
                     System.out.println("Loading objects");
                     JSONArray jArray = FileUtilities.readJsonsFromFile(path);
                     if (jArray != null){
-                        gameObjects = new IGameObject [jArray.length()];
-                        for (int i = 0; i < gameObjects.length; i++){
+                        gameObjects = new ArrayList<>();
+                        for (int i = 0; i < jArray.length(); i++){
                             JSONObject jObj = jArray.getJSONObject(i);
                             String typeLabel = jObj.getString(TypeLabel);
-                            if (typeLabel.equals("Blossom")){
-                                gameObjects[i] = new Blossom(jObj);
-                            }
-                            else if (typeLabel.equals("Spider")){
-                                gameObjects[i] = new Spider(jObj);
-                            }
+                            gameObjects.add(GameObjectsJSONFactory.getGameObject(jObj));
                         }
                         printGameItems(); 
                         canvas.drawGameItems(gameObjects);
@@ -252,8 +226,8 @@ public class GameEditor_3 extends JFrame implements KeyListener {
     
     private void printGameItems(){
         System.out.println("Objects Added to Game are: ");
-        for (int i = 0; i < itemsCounter; i++){
-            System.out.println( ( (IToJsonObject) gameObjects[i]).toJSONObject());
+        for (IGameObject obj: gameObjects){
+            System.out.println( ( (IToJsonObject) obj).toJSONObject());
         }
     }
 
@@ -313,7 +287,7 @@ public class GameEditor_3 extends JFrame implements KeyListener {
     }
     
     public static void main(String [] args) throws Exception{
-       GameEditor_3 gui = new GameEditor_3();
+       GameEditor_4 gui = new GameEditor_4();
     }
 
 
@@ -322,7 +296,7 @@ public class GameEditor_3 extends JFrame implements KeyListener {
         int size, boxSize;
         int pX, pY;
         
-        IGameObject objects[];
+        ArrayList<IGameObject> objects = new ArrayList<>();
 
         public Canvas(int size, int boxSize){
             this.size = size;
@@ -344,7 +318,7 @@ public class GameEditor_3 extends JFrame implements KeyListener {
             try {
                 drawGameItems(g);
             } catch (Exception ex) {
-                Logger.getLogger(GameEditor_3.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GameEditor_4.class.getName()).log(Level.SEVERE, null, ex);
             }
         }     
 
@@ -368,8 +342,8 @@ public class GameEditor_3 extends JFrame implements KeyListener {
             g2.drawRect(xCoord*boxSize-2, yCoord*boxSize-2, boxSize+4, boxSize+4);
         }
         
-        public void drawGameItems(IGameObject [] objs){
-            this.objects = objs;
+        public void drawGameItems(ArrayList<IGameObject> objects){
+            this.objects = objects;
             repaint();
         }
         
@@ -378,18 +352,18 @@ public class GameEditor_3 extends JFrame implements KeyListener {
             IAWTGameView view = null;
             
             if (objects != null){
-                for (int i = 0; i < objects.length; i++){
-                    if (objects[i] != null){
-                        if (objects[i] instanceof Blossom){
-                            if (objects[i].getValue() >= 10) {
-                               view = new VNumberedBox(objects[i], boxSize, Color.GREEN, "Clover");
+                for (IGameObject obj: objects){
+                    if (obj != null){
+                        if (obj instanceof Blossom){
+                            if (obj.getValue() >= 10) {
+                               view = new VNumberedBox(obj, boxSize, Color.GREEN, "Clover");
                             }
                             else {
-                                view = new VNumberedBox(objects[i], boxSize, Color.pink, "DLion");
+                                view = new VNumberedBox(obj, boxSize, Color.pink, "DLion");
                             }
                         }
-                        else if (objects[i] instanceof Spider){
-                            view = new VNumberedCircle(objects[i], boxSize, Color.black, "Spider");
+                        else if (obj instanceof Spider){
+                            view = new VNumberedCircle(obj, boxSize, Color.black, "Spider");
                         }
                         view.draw(g);
                     }

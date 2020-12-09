@@ -14,17 +14,8 @@ import game.IGameObject;
  */
 public abstract class AbstractGameView implements IAWTGameView{
     
-    IGameObject gObj;
-    int length = 20;
-    
-    //String id;
-    //private static Integer viewCounter = 0;
-    
-    /*
-    public AbstractGameView(){
-        this(new Blossom(), 20);
-    }
-    */
+    protected IGameObject gObj;
+    protected int length = 20;
     
     public AbstractGameView(IGameObject obj, int length) throws Exception {
         
@@ -37,9 +28,8 @@ public abstract class AbstractGameView implements IAWTGameView{
         this.length = length;
     }
     
-    /*
-    public void setEdgeLength(int length){
-        this.length = length;
-    }  
-    */
+    public static IAWTGameView getView(IGameObject gObj, int length, IViewFactory factory) throws Exception{        
+        return factory.getView(gObj, length);        
+    }
+    
 }

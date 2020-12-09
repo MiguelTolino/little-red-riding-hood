@@ -5,7 +5,6 @@
  */
 package common;
 
-import game.Polyline;
 import game.Position;
 import java.io.BufferedReader;
 import java.io.File;
@@ -130,16 +129,14 @@ public class FileUtilities {
         Position p4 = new Position(1,2);
         Position pA1[] = {p1, p2, p3, p4};
         Position pA2[] = {p4, p3, p2, p1};       
-        Polyline pl1 = new Polyline(pA1);
-        Polyline pl2 = new Polyline(pA2);
+        
         
         JSONObject jsons [] = {
             p1.toJSONObject(),
             p2.toJSONObject(),
             p3.toJSONObject(),
             p4.toJSONObject(),
-            pl1.toJSONObject(),
-            pl2.toJSONObject()
+            
         };
         writeJsonsToFile(jsons, dirName + "/testWriteFile");
         

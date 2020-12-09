@@ -11,15 +11,18 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.JPanel;
 import views.AbstractGameView;
 import views.IAWTGameView;
-import views.VNumberedBox;
-import views.VNumberedCircle;
+import views.IViewFactory;
+import views.boxes.BoxesFactory;
+import views.icons.IconsFactory;
 
 /**
  *
  * @author juanangel
  */
 public class GameCanvas extends JPanel {
-          
+      
+    IViewFactory viewFactory = new BoxesFactory();
+    
     int editCol, editRow;
     int canvasEdge = 400;
     int squareEdge = 20;
@@ -49,7 +52,16 @@ public class GameCanvas extends JPanel {
     
     public void refresh(){
         repaint();
-    }    
+    }
+    
+    public void setViewsFamily(IViewFactory viewFactory){       
+        if (viewFactory != null) {
+            this.viewFactory = viewFactory;
+        }
+         repaint();
+    }
+    
+
     
     private void drawGrid(Graphics g){
         Color c = g.getColor();
@@ -69,25 +81,10 @@ public class GameCanvas extends JPanel {
         drawGrid(g);
         for (IGameObject gObj: gObjects){
             if (gObj != null){
-                IAWTGameView v = null;
+                IAWTGameView v;
                 try {
-                    if (gObj instanceof RidingHood_2) {
-                        v = new VNumberedBox(gObj, squareEdge, Color.red, "RHood");
-                    }
-                    if (gObj instanceof Blossom){
-                        if (gObj.getValue() >= 10) {
-                           v = new VNumberedBox(gObj, squareEdge, Color.GREEN, "Clover");
-                        }
-                        else {
-                            v = new VNumberedBox(gObj, squareEdge, Color.pink, "DLion");
-                        }
-                    }
-                    else if (gObj instanceof Spider){
-                        v = new VNumberedCircle(gObj, squareEdge, Color.black, "Spider");
-                    }
-
-                    if (v != null)
-                        v.draw(g);
+                    v = AbstractGameView.getView(gObj, squareEdge, viewFactory);
+                    v.draw(g);
                 } catch (Exception ex) {}                
             }
         }

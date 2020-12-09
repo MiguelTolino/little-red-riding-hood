@@ -6,6 +6,7 @@
 package game;
 
 import common.FileUtilities;
+import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,23 +43,16 @@ public class TestRidingHood {
      * @param  n número de llamadas al método
      * @return posiciones por las que ha pasado el objeto
      */
-    public static Position [] testMoveToNextPosition(IGameObject gObj, Blossom targets[], int n){
+    public static ArrayList<Position> testMoveToNextPosition(IGameObject gObj, ArrayList<Blossom> targets, int calls){
         
         System.out.println("testMoveToNextPosition");
         
         // Array para guardar posiciones trayectoria objeto RidingHood
-        Position trace[] = new Position[n];
-        for (int i = 0; i < trace.length; i++){
-           trace[i] = new Position();
-        }
+        ArrayList<Position> trace = new  ArrayList<>();
         
-        // Invocamos moveToNextPosition sobre el último objeto
-        // RidingHood creado un número de veces sudiciente para
-        // pasar por todos los blossoms.
-        // Guardamos las posiciones en trace.
-        for (int i = 0; i < trace.length; i++){
+        for (int i = 0; i < calls; i++){
             gObj.moveToNextPosition();
-            trace[i] = new Position(gObj.getPosition());
+            trace.add(new Position(gObj.getPosition()));
         }
         System.out.println("-----------------------------------------------");
 
@@ -71,17 +65,23 @@ public class TestRidingHood {
      * @param fileName
      * @param trace 
      */
-    public static void testSaveAndLoad(String fileName, Position [] trace) {
+    public static void testSaveAndLoad(String fileName, ArrayList<Position> trace) {
         
         System.out.println("testSaveAndLoad");
         
+        if (trace == null){
+            System.out.println("testSaveAndLoad: second argument is null");
+        }
+        
         // Guardamos las posiciones por las que ha pasado el objeto RidingHood 
         // en formato JSON en un fichero.
-        JSONObject jPositions [] = new JSONObject[trace.length];
-        for (int i = 0; i < trace.length; i++){
-            if (trace[i] != null){
-                jPositions[i] = trace[i].toJSONObject();
+        JSONObject jPositions [] = new JSONObject[trace.size()];
+        int counter = 0;
+        for (Position p : trace){
+            if (p != null){
+                jPositions[counter] = p.toJSONObject();
             }
+            counter++;
         }
         FileUtilities.writeJsonsToFile(jPositions, fileName);
          
@@ -103,19 +103,20 @@ public class TestRidingHood {
 
         // Ejercicio 2.2 Invocación constructor con array de blossoms .......................
         // Crear array de Blossoms
-        Blossom blossoms[] = {new Blossom(new Position(1,1)),
-                       new Blossom(new Position(6,1)),
-                       new Blossom(new Position(3,3)),
-                       new Blossom(new Position(6,6)),
-                       new Blossom(new Position(1,6)),
-                       new Blossom(new Position(1,1)),
-                       new Blossom(new Position(1,4))
-                      };        
+        ArrayList<Blossom> blossoms = new ArrayList<>();
+        blossoms.add(new Blossom(new Position(1,1)));       
+        blossoms.add(new Blossom(new Position(6,1)));
+        blossoms.add(new Blossom(new Position(3,3)));
+        blossoms.add(new Blossom(new Position(6,6)));
+        blossoms.add(new Blossom(new Position(1,6)));
+        blossoms.add(new Blossom(new Position(1,1)));
+        blossoms.add(new Blossom(new Position(1,4)));
+                             
         // Crear nuevo objeto RidingHood pasándole el array de blossoms.
         IGameObject b = new RidingHood_1(new Position(1,1), 0, 0, blossoms);
         
         // Ejercicio 2.5 .....................................................................
-        Position trace [] = testMoveToNextPosition(b, blossoms, 40);
+        ArrayList<Position> trace = testMoveToNextPosition(b, blossoms, 40);
         
         // Ejercicio 2.6 .....................................................................
         // Create directory for saveing test results if it does not exist.
