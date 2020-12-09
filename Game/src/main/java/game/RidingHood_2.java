@@ -60,4 +60,12 @@ public class RidingHood_2 extends AbstractGameObject {
     public void moveDown(){
         dY = 1; dX = 0;
     }
+
+    @Override
+    public String toString() {
+        return ("Riding Hood:   Position [" + position.getX() + ", " + position.getY() + "]   "
+                + "|    Lifes: " + lifes + "   |   Points: " + value + "     |    Mode: " + mode);
+    }
+    
+    
 }

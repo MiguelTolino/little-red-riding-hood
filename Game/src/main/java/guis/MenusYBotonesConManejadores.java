@@ -14,29 +14,24 @@ import javax.swing.*;
    @author TIC-LSI 
  */
  
-public class MenusYBotonesConManejadores extends JFrame implements ActionListener {
+public class MenusYBotonesConManejadores extends JMenuBar implements ActionListener {
 
     private static final long serialVersionUID = 5110341197899182147L;
 
-    JMenuBar barraDelMenu;
+    //JMenuBar barraDelMenu;
     JMenu menu_1, menu_2, menu_3;
     JMenuItem item_1, item_2, item_3, item_4, item_5;
     JButton b1, b2, b3;
 
 
     public MenusYBotonesConManejadores(){
-
-       super("Menus y botones con manejadores de eventos");
-       
-       construirMenus();
-       setSize (300,240);
-       setVisible(true);       
-       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                       
+       super();
+       construirMenus();                  
     }
 
     private void construirMenus(){
     
-       barraDelMenu = new JMenuBar();
+       //barraDelMenu = new JMenuBar();
        
        menu_1 = new JMenu("menu 1");
        menu_2 = new JMenu("menu 2");  
@@ -77,10 +72,10 @@ public class MenusYBotonesConManejadores extends JFrame implements ActionListene
         });
   
        // A�adimos elementos a barra de men�.
-       barraDelMenu.add(menu_1);
-       barraDelMenu.add(menu_2);
-       barraDelMenu.add(b1);
-       barraDelMenu.add(b2);
+       this.add(menu_1);
+       this.add(menu_2);
+       this.add(b1);
+       this.add(b2);
              
        // A�adimos elementos a men� 1.
        menu_1.add(item_1); 
@@ -97,8 +92,7 @@ public class MenusYBotonesConManejadores extends JFrame implements ActionListene
        menu_2.add(b3);
        
        // Le ponemos un borde a la barra de men� y lo a�adimos a la ventana.
-       barraDelMenu.setBorder(BorderFactory.createLineBorder(Color.blue));
-       setJMenuBar(barraDelMenu);             
+       this.setBorder(BorderFactory.createLineBorder(Color.blue));             
     }
     
     @Override
@@ -120,9 +114,6 @@ public class MenusYBotonesConManejadores extends JFrame implements ActionListene
 	}	
     }
     
-    public static void main(String [] args){
-       MenusYBotonesConManejadores gui = new MenusYBotonesConManejadores();
-    }
 }
 
 class Manejador implements ActionListener {

@@ -1,5 +1,6 @@
 package guis;
 
+import static game.Game_2.ICON;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import javax.swing.border.*;
  * @author TIC-LSI
  */
 public class PanelConImagen extends JFrame {
+    
 
     PanelGrafica panelGrafica;
     PanelButtons panelBotones;
@@ -30,6 +32,8 @@ public class PanelConImagen extends JFrame {
         // Construimos y a�adimos paneles.
         construirPaneles();
 
+                //Set Icon
+        this.setIconImage(new ImageIcon(ICON + "icon.png").getImage());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 450);
         setResizable(false);

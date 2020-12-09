@@ -7,6 +7,7 @@ package game;
 
 import common.FileUtilities;
 import static common.IToJsonObject.TypeLabel;
+import guis.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,6 +18,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,64 +35,76 @@ import org.json.JSONObject;
 public class Game_2 extends JFrame implements KeyListener, ActionListener {
 
     // KeyBoard
-    public static final int UP_KEY    = 38;
-    public static final int DOWN_KEY  = 40;
+    public static final int UP_KEY = 38;
+    public static final int DOWN_KEY = 40;
     public static final int RIGTH_KEY = 39;
-    public static final int LEFT_KEY  = 37;
+    public static final int LEFT_KEY = 37;
     public static final int SPACE_KEY = 32;
+    public static final String NAME = "Little Red Riding Hood Game";
+    public static final String ICON = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\";
     int lastKey = DOWN_KEY;
-    
+
     // Game Panel and 
-    public static final int CANVAS_WIDTH = 480;    
+    public static final int CANVAS_WIDTH = 480;
     int boxSize = 40;
     int row, col;
     GameCanvas canvas;
     JPanel canvasFrame;
     JLabel dataLabel;
-    
+    MenusYBotonesConManejadores menu;
+    ImageIcon img;
+
     // Timer
     Timer timer;
     int tick = 200;
-    
+
     // Game Variables
     ConcurrentLinkedQueue<IGameObject> gObjs = new ConcurrentLinkedQueue<>();
-    RidingHood_2 ridingHood = new RidingHood_2(new Position(0,0), 1, 1);
+    RidingHood_2 ridingHood = new RidingHood_2(new Position(0, 0), 1, 1);
     int screenCounter = 0;
 
-    
-    public Game_2() throws Exception{
+    public Game_2() throws Exception {
 
-       super("Game_2");
-       
-       // Game Initializations.
-       gObjs.add(ridingHood);
-       loadNewBoard(0);
-  
-       // Window initializations.
-       dataLabel = new JLabel(ridingHood.toString());
-       dataLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)); 
-       dataLabel.setPreferredSize(new Dimension(120,40));
-       dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            
-       canvas = new GameCanvas(CANVAS_WIDTH, boxSize);
-       canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_WIDTH));
-       canvas.setBorder(BorderFactory.createLineBorder(Color.blue));
-       
-       canvasFrame = new JPanel();
-       canvasFrame.setPreferredSize(new Dimension(CANVAS_WIDTH + 40, CANVAS_WIDTH + 40));
-       canvasFrame.add(canvas);
-       getContentPane().add(canvasFrame);
-       getContentPane().add(dataLabel, BorderLayout.SOUTH);
-       
-       setSize (CANVAS_WIDTH + 40, CANVAS_WIDTH + 80);
-       setResizable(false);
+        super(NAME);
+
+        // Game Initializations.
+        gObjs.add(ridingHood);
+        loadNewBoard(0);
+
+        // Window initializations.
+        dataLabel = new JLabel(ridingHood.toString());
+        dataLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        //dataLabel.setPreferredSize(new Dimension(120, 40));
+        dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        canvas = new GameCanvas(CANVAS_WIDTH, boxSize);
+        canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_WIDTH));
+        canvas.setBorder(BorderFactory.createLineBorder(Color.blue));
+
+        canvasFrame = new JPanel();
+        canvasFrame.setPreferredSize(new Dimension(CANVAS_WIDTH + 40, CANVAS_WIDTH));
+        canvasFrame.add(canvas);
+        getContentPane().add(canvasFrame);
+        getContentPane().add(dataLabel, BorderLayout.SOUTH);
+        
+        //Set menu bar
+        menu = new MenusYBotonesConManejadores();
+        setJMenuBar(menu);
+        
+        //Set Icon
+        img = new ImageIcon(ICON + "icon.png");
+        this.setIconImage(img.getImage());
+
+
+        setSize(CANVAS_WIDTH + 40, CANVAS_WIDTH + 100);
+        setResizable(false);
         setLocationRelativeTo(null);
-       setVisible(true);         
-       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
-       
-       addKeyListener(this);
-       this.setFocusable(true);
-       timer = new Timer(tick, this);
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        addKeyListener(this);
+        this.setFocusable(true);
+        timer = new Timer(tick, this);
     }
 
     @Override
@@ -100,14 +114,13 @@ public class Game_2 extends JFrame implements KeyListener, ActionListener {
     // Version 1
     @Override
     public void keyPressed(KeyEvent ke) {
-        lastKey = ke.getKeyCode(); 
-        if (lastKey == SPACE_KEY){
-            if (timer.isRunning()){
-                    timer.stop();
-                }
-                else{
-                    timer.start();
-                }
+        lastKey = ke.getKeyCode();
+        if (lastKey == SPACE_KEY) {
+            if (timer.isRunning()) {
+                timer.stop();
+            } else {
+                timer.start();
+            }
         }
     }
 
@@ -117,27 +130,28 @@ public class Game_2 extends JFrame implements KeyListener, ActionListener {
 
     /**
      * Se invoca en cada tick de reloj
-     * @param ae 
-     */  
+     *
+     * @param ae
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
-       
+
         // Actions on Caperucita
         setDirection(lastKey);
-        
+
         // Moving Caperucita
         ridingHood.moveToNextPosition();
-        
+
         // Check if Caperucita is in board limits
         setInLimits();
-        
+
         // Logic to change to a new screen.
-        if (processCell() == 1){
+        if (processCell() == 1) {
             screenCounter++;
             ridingHood.incLifes(1);
             loadNewBoard(screenCounter);
         }
-        
+
         // Updating graphics and labels
         dataLabel.setText(ridingHood.toString());
         canvas.drawObjects(gObjs);
@@ -148,11 +162,11 @@ public class Game_2 extends JFrame implements KeyListener, ActionListener {
     Si Caperucita está sobre un blossom añade su valor al de Caperucita
     y lo elimina del tablero.
     Devuelve el número de blossoms que hay en el tablero.
-    */    
-    private int processCell(){
+     */
+    private int processCell() {
         Position rhPos = ridingHood.getPosition();
-        for (IGameObject gObj: gObjs){
-            if(gObj != ridingHood && rhPos.isEqual(gObj.getPosition())){
+        for (IGameObject gObj : gObjs) {
+            if (gObj != ridingHood && rhPos.isEqual(gObj.getPosition())) {
                 int v = ridingHood.getValue() + gObj.getValue();
                 ridingHood.setValue(v);
                 gObjs.remove(gObj);
@@ -160,84 +174,82 @@ public class Game_2 extends JFrame implements KeyListener, ActionListener {
         }
         return gObjs.size();
     }
-    
+
     /*
     Fija la dirección de caperucita.
     Caperucita se moverá en esa dirección cuando se invoque
     su método moveToNextPosition.
-    */    
-    private void setDirection(int lastKey){
+     */
+    private void setDirection(int lastKey) {
         switch (lastKey) {
-            case UP_KEY:  
+            case UP_KEY:
                 ridingHood.moveUp();
                 break;
             case DOWN_KEY:
-                ridingHood.moveDown();                    
+                ridingHood.moveDown();
                 break;
             case RIGTH_KEY:
                 ridingHood.moveRigth();
                 break;
             case LEFT_KEY:
                 ridingHood.moveLeft();
-                break; 
+                break;
         }
     }
-    
+
     /*
     Comprueba que Caperucita no se sale del tablero.
     En caso contrario corrige su posición
-    */
-    private void setInLimits(){
-        
-        int lastBox = (CANVAS_WIDTH/boxSize) - 1;
-        
-        if (ridingHood.getPosition().getX() < 0){
+     */
+    private void setInLimits() {
+
+        int lastBox = (CANVAS_WIDTH / boxSize) - 1;
+
+        if (ridingHood.getPosition().getX() < 0) {
             ridingHood.position.x = 0;
-        }
-        else if ( ridingHood.getPosition().getX() > lastBox ){
+        } else if (ridingHood.getPosition().getX() > lastBox) {
             ridingHood.position.x = lastBox;
         }
-        
-        if (ridingHood.getPosition().getY() < 0){
+
+        if (ridingHood.getPosition().getY() < 0) {
             ridingHood.position.y = 0;
-        }
-        else if (ridingHood.getPosition().getY() > lastBox){
+        } else if (ridingHood.getPosition().getY() > lastBox) {
             ridingHood.position.y = lastBox;
-        } 
+        }
     }
-    
+
     /*
     Carga un nuevo tablero
-    */
-    private void loadNewBoard(int counter){
-        switch(counter){
-            case 0: 
-              gObjs.add(new Blossom(new Position(2,2), 10, 10));
-              gObjs.add(new Blossom(new Position(2,8), 4, 10));
-              gObjs.add(new Blossom(new Position(8,8), 10, 10));
-              gObjs.add(new Blossom(new Position(8,2), 4, 10));
-              break;
+     */
+    private void loadNewBoard(int counter) {
+        switch (counter) {
+            case 0:
+                gObjs.add(new Blossom(new Position(2, 2), 10, 10));
+                gObjs.add(new Blossom(new Position(2, 8), 4, 10));
+                gObjs.add(new Blossom(new Position(8, 8), 10, 10));
+                gObjs.add(new Blossom(new Position(8, 2), 4, 10));
+                break;
             case 1:
                 String path = "src/main/resources/games/game.txt";
                 System.out.println("Loading objects");
                 JSONArray jArray = FileUtilities.readJsonsFromFile(path);
-                if (jArray != null){
-                    for (int i = 0; i < jArray.length(); i++){
+                if (jArray != null) {
+                    for (int i = 0; i < jArray.length(); i++) {
                         JSONObject jObj = jArray.getJSONObject(i);
                         String typeLabel = jObj.getString(TypeLabel);
                         gObjs.add(GameObjectsJSONFactory.getGameObject(jObj));
-                    }                       
+                    }
                 }
                 break;
             default:
-              gObjs.add(new Blossom(new Position(2,2), 10, 10));
-              gObjs.add(new Blossom(new Position(2,8), 4, 10));
-              gObjs.add(new Blossom(new Position(8,8), 10, 10));
-              gObjs.add(new Blossom(new Position(8,2), 4, 10));  
-        }        
+                gObjs.add(new Blossom(new Position(2, 2), 10, 10));
+                gObjs.add(new Blossom(new Position(2, 8), 4, 10));
+                gObjs.add(new Blossom(new Position(8, 8), 10, 10));
+                gObjs.add(new Blossom(new Position(8, 2), 4, 10));
+        }
     }
-    
-    public static void main(String [] args) throws Exception{
-       Game_2 gui = new Game_2();
+
+    public static void main(String[] args) throws Exception {
+        Game_2 gui = new Game_2();
     }
 }

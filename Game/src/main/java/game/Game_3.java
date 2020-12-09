@@ -5,6 +5,8 @@
  */
 package game;
 
+import static game.Game_2.ICON;
+import guis.MenusYBotonesConManejadores;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,6 +45,7 @@ public class Game_3 extends JFrame implements KeyListener, ActionListener {
     GameCanvas canvas;
     JPanel canvasFrame;    
     JLabel dataLabel;
+    MenusYBotonesConManejadores menu;
     
     // Timer
     Timer timer;
@@ -55,7 +59,7 @@ public class Game_3 extends JFrame implements KeyListener, ActionListener {
     
     public Game_3() throws Exception{
 
-       super("Game_1");
+       super(Game_2.NAME);
        
        // Game Initializations.
        gObjs.add(ridingHood);
@@ -64,7 +68,7 @@ public class Game_3 extends JFrame implements KeyListener, ActionListener {
        // Window initializations.
        dataLabel = new JLabel(ridingHood.toString());
        dataLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)); 
-       dataLabel.setPreferredSize(new Dimension(120,40));
+       //dataLabel.setPreferredSize(new Dimension(120,40));
        dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
       
        canvas = new GameCanvas(CANVAS_WIDTH, boxSize);
@@ -77,7 +81,14 @@ public class Game_3 extends JFrame implements KeyListener, ActionListener {
        getContentPane().add(canvasFrame);
        getContentPane().add(dataLabel, BorderLayout.SOUTH);
        
-       setSize (CANVAS_WIDTH + 40, CANVAS_WIDTH + 80);
+       //Set JMenu
+        menu = new MenusYBotonesConManejadores();
+        setJMenuBar(menu);
+        
+        //Set Icon
+        this.setIconImage(new ImageIcon(ICON + "icon.png").getImage());
+       
+       setSize (CANVAS_WIDTH + 40, CANVAS_WIDTH + 100);
        setResizable(false);
        setLocationRelativeTo(null);
        setVisible(true);         
