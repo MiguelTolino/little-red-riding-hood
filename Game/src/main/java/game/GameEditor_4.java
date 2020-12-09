@@ -216,6 +216,7 @@ public class GameEditor_4 extends JFrame implements KeyListener {
         
         setSize (CANVAS_WIDTH + 40, CANVAS_WIDTH + 160);
         setResizable(false);
+        setLocationRelativeTo(null);
         setVisible(true);         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
        

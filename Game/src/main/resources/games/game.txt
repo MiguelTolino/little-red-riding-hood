@@ -1,7 +1,10 @@
-{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":2,"y":1},"value":10}
-{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":5,"y":1},"value":10}
-{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":8,"y":1},"value":10}
-{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":5,"y":4},"value":5}
-{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":2,"y":7},"value":5}
-{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":5,"y":7},"value":5}
-{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":8,"y":7},"value":10}
+{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":0,"y":0},"value":10}
+{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":3,"y":4},"value":10}
+{"mode":0,"lifes":1,"GIT_type":"Blossom","position":{"GIT_type":"Position","x":5,"y":8},"value":5}
+{"mode":0,"lifes":1,"GIT_type":"Spider","position":{"GIT_type":"Position","x":8,"y":5},"value":5}
+{"mode":0,"lifes":1,"GIT_type":"Spider","position":{"GIT_type":"Position","x":6,"y":1},"value":5}
+{"mode":0,"lifes":1,"GIT_type":"Spider","position":{"GIT_type":"Position","x":4,"y":1},"value":5}
+{"mode":0,"lifes":1,"GIT_type":"Spider","position":{"GIT_type":"Position","x":3,"y":1},"value":5}
+{"mode":0,"lifes":1,"GIT_type":"Spider","position":{"GIT_type":"Position","x":2,"y":1},"value":5}
+{"mode":0,"lifes":1,"GIT_type":"Spider","position":{"GIT_type":"Position","x":1,"y":1},"value":5}
+{"mode":0,"lifes":1,"GIT_type":"Spider","position":{"GIT_type":"Position","x":0,"y":1},"value":5}

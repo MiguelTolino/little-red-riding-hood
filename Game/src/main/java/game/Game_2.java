@@ -84,6 +84,7 @@ public class Game_2 extends JFrame implements KeyListener, ActionListener {
        
        setSize (CANVAS_WIDTH + 40, CANVAS_WIDTH + 80);
        setResizable(false);
+        setLocationRelativeTo(null);
        setVisible(true);         
        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
        
