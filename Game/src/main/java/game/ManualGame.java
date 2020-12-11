@@ -32,7 +32,7 @@ import org.json.JSONObject;
  *
  * @author juanangel
  */
-public class Game_2 extends JFrame implements KeyListener, ActionListener {
+public class ManualGame extends JFrame implements KeyListener, ActionListener {
 
     // KeyBoard
     public static final int UP_KEY = 38;
@@ -40,9 +40,11 @@ public class Game_2 extends JFrame implements KeyListener, ActionListener {
     public static final int RIGTH_KEY = 39;
     public static final int LEFT_KEY = 37;
     public static final int SPACE_KEY = 32;
+    
+    //Resources
     public static final String NAME = "Little Red Riding Hood Game";
     public static final String ICON = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\";
-    int lastKey = DOWN_KEY;
+    int lastKey = 0;
 
     // Game Panel and 
     public static final int CANVAS_WIDTH = 480;
@@ -51,7 +53,7 @@ public class Game_2 extends JFrame implements KeyListener, ActionListener {
     GameCanvas canvas;
     JPanel canvasFrame;
     JLabel dataLabel;
-    MenusYBotonesConManejadores menu;
+    MenuControllerGame menu;
     ImageIcon img;
 
     // Timer
@@ -61,9 +63,9 @@ public class Game_2 extends JFrame implements KeyListener, ActionListener {
     // Game Variables
     ConcurrentLinkedQueue<IGameObject> gObjs = new ConcurrentLinkedQueue<>();
     RidingHood_2 ridingHood = new RidingHood_2(new Position(0, 0), 1, 1);
-    int screenCounter = 0;
+    public int screenCounter = 0;
 
-    public Game_2() throws Exception {
+    public ManualGame() throws Exception {
 
         super(NAME);
 
@@ -88,7 +90,7 @@ public class Game_2 extends JFrame implements KeyListener, ActionListener {
         getContentPane().add(dataLabel, BorderLayout.SOUTH);
         
         //Set menu bar
-        menu = new MenusYBotonesConManejadores();
+        menu = new MenuControllerGame(this);
         setJMenuBar(menu);
         
         //Set Icon
@@ -221,7 +223,7 @@ public class Game_2 extends JFrame implements KeyListener, ActionListener {
     /*
     Carga un nuevo tablero
      */
-    private void loadNewBoard(int counter) {
+    public void loadNewBoard(int counter) {
         switch (counter) {
             case 0:
                 gObjs.add(new Blossom(new Position(2, 2), 10, 10));
@@ -248,8 +250,16 @@ public class Game_2 extends JFrame implements KeyListener, ActionListener {
                 gObjs.add(new Blossom(new Position(8, 2), 4, 10));
         }
     }
+    
+    public ConcurrentLinkedQueue getObjs() {
+        return gObjs;
+    }
+    
+    public Timer getTimer() {
+        return (timer);
+    }
 
     public static void main(String[] args) throws Exception {
-        Game_2 gui = new Game_2();
+        ManualGame gui = new ManualGame();
     }
 }

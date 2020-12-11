@@ -42,7 +42,7 @@ import views.boxes.VNumberedCircle;
  *
  * @author juanangel
  */
-public class GameEditor_4 extends JFrame implements KeyListener {
+public class GameEditor extends JFrame implements KeyListener {
     
     public static final int UP_KEY    = 38;
     public static final int DOWN_KEY  = 40;
@@ -72,9 +72,9 @@ public class GameEditor_4 extends JFrame implements KeyListener {
     JMenuItem itSave, itLoad;
 
     
-    public GameEditor_4() throws Exception{
+    public GameEditor() throws Exception{
 
-        super("Game Editor v3");
+        super("Game Editor");
        
         ///////////////////////////////////////////////////////////////////////////////////
         // Define Buttos and buttons handlers.............................................
@@ -288,7 +288,7 @@ public class GameEditor_4 extends JFrame implements KeyListener {
     }
     
     public static void main(String [] args) throws Exception{
-       GameEditor_4 gui = new GameEditor_4();
+       GameEditor gui = new GameEditor();
     }
 
 
@@ -319,7 +319,7 @@ public class GameEditor_4 extends JFrame implements KeyListener {
             try {
                 drawGameItems(g);
             } catch (Exception ex) {
-                Logger.getLogger(GameEditor_4.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GameEditor.class.getName()).log(Level.SEVERE, null, ex);
             }
         }     
 

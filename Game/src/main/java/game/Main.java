@@ -5,7 +5,7 @@
  */
 package game;
 
-import guis.PanelConImagen;
+import guis.FirstWindow;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -24,11 +24,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        PanelConImagen initWindow = new PanelConImagen();
-        int choice = initWindow.getSelection();
-        GameEditor_4 ge4;
-        Game_3 g3;
-        Game_2 g2;
+        //Choose Game
+        FirstWindow initWindow = new FirstWindow();
+        int choice = -1;
+        GameEditor ge;
+        AutoGame ag;
+        ManualGame mg;
 
         while ((choice = initWindow.getSelection()) < 0) {
             System.out.println(choice);
@@ -36,17 +37,16 @@ public class Main {
         switch (choice) {
             case 0:
                 System.out.println("Modo manual");
-                g2 = new Game_2();
+                mg = new ManualGame();
                 break;
             case 1:
                 System.out.println("Modo automatico");
-                g3 = new Game_3();
+                ag = new AutoGame();
                 break;
             case 2:
-                ge4 = new GameEditor_4();
+                System.out.println("Game Editor");
+                ge = new GameEditor();
                 break;
-            default:
-                System.out.println("Default");
         }
         initWindow.dispatchEvent(new WindowEvent(initWindow, WindowEvent.WINDOW_CLOSING));
 

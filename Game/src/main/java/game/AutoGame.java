@@ -5,7 +5,7 @@
  */
 package game;
 
-import static game.Game_2.ICON;
+import static game.ManualGame.ICON;
 import guis.MenusYBotonesConManejadores;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,8 +28,9 @@ import javax.swing.border.EtchedBorder;
  *
  * @author juanangel
  */
-public class Game_3 extends JFrame implements KeyListener, ActionListener {
+public class AutoGame extends JFrame implements KeyListener, ActionListener {
 
+    public static final String NAME = "Little Red Riding Hood Game";
     // KeyBoard
     public static final int UP_KEY    = 38;
     public static final int DOWN_KEY  = 40;
@@ -57,9 +58,9 @@ public class Game_3 extends JFrame implements KeyListener, ActionListener {
     int screenCounter = 0;
 
     
-    public Game_3() throws Exception{
+    public AutoGame() throws Exception{
 
-       super(Game_2.NAME);
+       super(NAME);
        
        // Game Initializations.
        gObjs.add(ridingHood);
@@ -216,6 +217,6 @@ public class Game_3 extends JFrame implements KeyListener, ActionListener {
     }
         
     public static void main(String [] args) throws Exception{
-       Game_3 gui = new Game_3();
+       AutoGame gui = new AutoGame();
     }
 }

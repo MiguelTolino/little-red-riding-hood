@@ -12,7 +12,7 @@ import javax.swing.*;
  *
  * @author TIC-LSI
  */
-public class MenusYBotonesConManejadores extends JMenuBar implements ActionListener {
+public class MenuControllerGameEditor extends JMenuBar implements ActionListener {
 
     private static final long serialVersionUID = 5110341197899182147L;
 
@@ -21,7 +21,7 @@ public class MenusYBotonesConManejadores extends JMenuBar implements ActionListe
     JMenuItem item_1, item_2, item_3, item_4, item_5, square_size;
     JButton b1, b2, b3;
 
-    public MenusYBotonesConManejadores() {
+    public MenuControllerGameEditor() {
         super();
         construirMenus();
     }
@@ -50,14 +50,11 @@ public class MenusYBotonesConManejadores extends JMenuBar implements ActionListe
         square_size.addActionListener(this);
 
         // Creamos un manejador especifico para los botones.   
-        Manejador m = new Manejador();
+        //Manejador m = new Manejador();
 
         // Creamos los botones y suscribimos el manejador 'm' a los
         // eventos producidos por dichos botones.
-        b1 = new JButton("b1");
-        b1.addActionListener(m);
-        b2 = new JButton("b2");
-        b2.addActionListener(m);
+
 
         // Creamos el botón b3, un manejador anónimo para el mismo y
         // suscribimos el manejador anónimo a su botón.
@@ -111,12 +108,4 @@ public class MenusYBotonesConManejadores extends JMenuBar implements ActionListe
         }
     }
 
-}
-
-class Manejador implements ActionListener {
-
-    @Override
-    public void actionPerformed(ActionEvent evento) {
-        System.out.println("Pulsado bot�n: " + evento.getActionCommand());
-    }
 }

@@ -1,6 +1,6 @@
 package guis;
 
-import static game.Game_2.ICON;
+import static game.ManualGame.ICON;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,14 +17,14 @@ import javax.swing.border.*;
  *
  * @author TIC-LSI
  */
-public class PanelConImagen extends JFrame {
+public class FirstWindow extends JFrame {
     
 
     PanelGrafica panelGrafica;
     PanelButtons panelBotones;
     int selection;
 
-    public PanelConImagen() {
+    public FirstWindow() {
 
         super("Little Red Riding Hood Game");
         selection = -1;
@@ -55,7 +55,7 @@ public class PanelConImagen extends JFrame {
     }
 
     public static void main(String[] args) {
-        PanelConImagen gui = new PanelConImagen();
+        FirstWindow gui = new FirstWindow();
     }
 
     /**
