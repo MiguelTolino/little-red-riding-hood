@@ -2,6 +2,7 @@ package guis;
 
 import common.FileUtilities;
 import common.IToJsonObject;
+import game.AbstractGameObject;
 import game.AutoGame;
 import game.GameEditor;
 import game.ManualGame;
@@ -10,10 +11,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class MenuControllerGame extends JMenuBar implements ActionListener {
@@ -101,16 +105,20 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent evento) {
+        Timer timer = mGame.getTimer();
         if (evento.getSource() == save) {
             System.out.println("Save seleccionado.");
+            saveGame(timer);
+
         } else if (evento.getSource() == load) {
             System.out.println("load seleccionado.");
+            loadGame();
         } else if (evento.getSource() == start) {
             System.out.println("Start seleccionado.");
-            mGame.getTimer().start();
+            timer.start();
         } else if (evento.getSource() == stop) {
             System.out.println("Stop seleccionado.");
-            mGame.getTimer().stop();
+            timer.stop();
         } else if (evento.getSource() == geditor) {
             System.out.println("geditor seleccionado.");
             mGame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -127,9 +135,48 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         }
     }
 
+    private void saveGame(Timer timer) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File("src/main/resources/games"));
+        int seleccion;
+        if (timer.isRunning()) {
+            timer.stop();
+        }
+        int size = mGame.getObjs().size();
+        JSONObject[] Jobjs = new JSONObject[size];
+        Object objs[];
+        objs = mGame.getObjs().toArray();
+        for (int i = 0; i < size; i++) {
+            //Jobjs[i] = objs[i].toJSONObject();
+            System.out.println(objs[i].toString());
+        }
+        seleccion = fileChooser.showSaveDialog(mGame.getContentPane());
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File fichero = fileChooser.getSelectedFile();
+            //FileUtilities.writeJsonsToFile(Jobjs, file.getName());
+        }
+    }
+
+    private void loadGame() {
+        JFileChooser fileChooser = new JFileChooser();
+        JSONArray jArray;
+        fileChooser.setCurrentDirectory(new File("src/main/resources/games"));
+        int seleccion = fileChooser.showOpenDialog(mGame.getContentPane());
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File fichero = fileChooser.getSelectedFile();
+            jArray = FileUtilities.readJsonsFromFile(fichero.getPath());
+            for(int i = 0; i < jArray.length(); i++){
+                JSONObject jObj = jArray.getJSONObject(i);
+                mGame.getObjs().add(jObj);
+                System.out.println(jObj.toString());
+            }
+        }
+    }
+
 }
 
-class HandlerEvent implements ActionListener {
+
+    class HandlerEvent implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent evento) {
