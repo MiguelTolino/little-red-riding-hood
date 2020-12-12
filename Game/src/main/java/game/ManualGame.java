@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -32,7 +33,7 @@ import org.json.JSONObject;
  *
  * @author juanangel
  */
-public class ManualGame extends JFrame implements KeyListener, ActionListener {
+public final class ManualGame extends JFrame implements KeyListener, ActionListener {
 
     // KeyBoard
     public static final int UP_KEY = 38;
@@ -40,11 +41,11 @@ public class ManualGame extends JFrame implements KeyListener, ActionListener {
     public static final int RIGTH_KEY = 39;
     public static final int LEFT_KEY = 37;
     public static final int SPACE_KEY = 32;
-    
+
     //Resources
     public static final String NAME = "Little Red Riding Hood Game";
     public static final String ICON = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\";
-    int lastKey = 0;
+    int lastKey = RIGTH_KEY;
 
     // Game Panel and 
     public static final int CANVAS_WIDTH = 480;
@@ -62,13 +63,15 @@ public class ManualGame extends JFrame implements KeyListener, ActionListener {
 
     // Game Variables
     ConcurrentLinkedQueue<IGameObject> gObjs = new ConcurrentLinkedQueue<>();
-    RidingHood_2 ridingHood = new RidingHood_2(new Position(0, 0), 1, 1);
+    RidingHood_2 ridingHood = new RidingHood_2(new Position(0, 0), 1, 2);
     public int screenCounter = 0;
 
     public ManualGame() throws Exception {
 
         super(NAME);
 
+        row = CANVAS_WIDTH / boxSize;
+        col = row;
         // Game Initializations.
         gObjs.add(ridingHood);
         loadNewBoard(0);
@@ -88,15 +91,14 @@ public class ManualGame extends JFrame implements KeyListener, ActionListener {
         canvasFrame.add(canvas);
         getContentPane().add(canvasFrame);
         getContentPane().add(dataLabel, BorderLayout.SOUTH);
-        
+
         //Set menu bar
         menu = new MenuControllerGame(this);
         setJMenuBar(menu);
-        
+
         //Set Icon
         img = new ImageIcon(ICON + "icon.png");
         this.setIconImage(img.getImage());
-
 
         setSize(CANVAS_WIDTH + 40, CANVAS_WIDTH + 100);
         setResizable(false);
@@ -146,6 +148,9 @@ public class ManualGame extends JFrame implements KeyListener, ActionListener {
 
         // Check if Caperucita is in board limits
         setInLimits();
+
+        //BugsMovement
+        BugsMovement();
 
         // Logic to change to a new screen.
         if (processCell() == 1) {
@@ -226,10 +231,8 @@ public class ManualGame extends JFrame implements KeyListener, ActionListener {
     public void loadNewBoard(int counter) {
         switch (counter) {
             case 0:
-                gObjs.add(new Blossom(new Position(2, 2), 10, 10));
-                gObjs.add(new Blossom(new Position(2, 8), 4, 10));
-                gObjs.add(new Blossom(new Position(8, 8), 10, 10));
-                gObjs.add(new Blossom(new Position(8, 2), 4, 10));
+                FirstScreen f1 = new FirstScreen(row, 2, 4);
+                f1.setObjs(gObjs);
                 break;
             case 1:
                 String path = "src/main/resources/games/game.txt";
@@ -250,20 +253,36 @@ public class ManualGame extends JFrame implements KeyListener, ActionListener {
                 gObjs.add(new Blossom(new Position(8, 2), 4, 10));
         }
     }
-    
-    public ConcurrentLinkedQueue getObjs() {
+
+    public ConcurrentLinkedQueue<IGameObject> getObjs() {
         return gObjs;
     }
-    
+
     public Timer getTimer() {
         return (timer);
     }
-    
+
     public GameCanvas getCanvas() {
         return (canvas);
     }
 
     public static void main(String[] args) throws Exception {
         ManualGame gui = new ManualGame();
+    }
+
+    public void BugsMovement() {
+        for (IGameObject gObj : gObjs) {
+            if (gObj instanceof Fly) {
+                ((Fly) gObj).moveFly(row);
+                if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
+                    ridingHood.incLifes(-1);
+                }
+            } else if (gObj instanceof Bee) {
+
+            } else if (gObj instanceof Spider) {
+
+            }
+
+        }
     }
 }

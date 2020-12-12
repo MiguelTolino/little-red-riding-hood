@@ -2,10 +2,13 @@ package guis;
 
 import common.FileUtilities;
 import common.IToJsonObject;
+import static common.IToJsonObject.TypeLabel;
 import game.AbstractGameObject;
 import game.AutoGame;
 import game.GameCanvas;
 import game.GameEditor;
+import game.GameObjectsJSONFactory;
+import game.IGameObject;
 import game.ManualGame;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -13,6 +16,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,8 +38,9 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
 
     //JMenuBar barraDelMenu;
     JMenu file, view, game, options;
-    JMenuItem save, load, start, stop, square_size, exit, box, circle, icons, r_clover, s_clover;
+    JMenuItem save, load, start, stop, square_size, exit, box, circle, icons;
     JButton geditor;
+    JFileChooser fileChooser;
 
     public MenuControllerGame(ManualGame mg) {
         super();
@@ -110,10 +116,13 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         circle.addActionListener(this);
         view.add(icons = new JMenuItem("Icons"));
         icons.addActionListener(this);
-        
 
         // Le ponemos un borde a la barra de men� y lo a�adimos a la ventana.
         this.setBorder(BorderFactory.createLineBorder(Color.blue));
+
+        //Configurate JFileChooser
+        fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File("src/main/resources/games"));
     }
 
     @Override
@@ -121,8 +130,11 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         Timer timer = mGame.getTimer();
         if (evento.getSource() == save) {
             System.out.println("Save seleccionado.");
-            saveGame(timer);
-
+            try {
+                saveGame(timer);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(MenuControllerGame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else if (evento.getSource() == load) {
             System.out.println("load seleccionado.");
             loadGame();
@@ -150,44 +162,48 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         handlerViews(evento.getSource());
     }
 
-    private void saveGame(Timer timer) {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File("src/main/resources/games"));
+    private void saveGame(Timer timer) throws FileNotFoundException {
+        ConcurrentLinkedQueue<IGameObject> gObjs = mGame.getObjs();
+        JSONObject jObjs[] = null;
         int seleccion;
         if (timer.isRunning()) {
             timer.stop();
         }
-        int size = mGame.getObjs().size();
-        JSONObject[] Jobjs = new JSONObject[size];
-        Object objs[];
-        objs = mGame.getObjs().toArray();
-        for (int i = 0; i < size; i++) {
-            //Jobjs[i] = objs[i].toJSONObject();
-            System.out.println(objs[i].toString());
+        System.out.println("Saving objects");
+        if (gObjs != null) {
+            jObjs = new JSONObject[gObjs.size()];
+            int i = 0;
+            for (IGameObject obj : gObjs) {
+                jObjs[i++] = ((IToJsonObject)obj).toJSONObject();
+            }
         }
         seleccion = fileChooser.showSaveDialog(mGame.getContentPane());
         if (seleccion == JFileChooser.APPROVE_OPTION) {
-            File fichero = fileChooser.getSelectedFile();
-            //TODO: Save File     FileUtilities.writeJsonsToFile(Jobjs, file.getName());
+            File fichero;
+            fichero = fileChooser.getSelectedFile();
+            FileUtilities.writeJsonsToFile(jObjs, fichero.getPath());
         }
     }
 
     private void loadGame() {
-        JFileChooser fileChooser = new JFileChooser();
         JSONArray jArray;
-        fileChooser.setCurrentDirectory(new File("src/main/resources/games"));
+        ConcurrentLinkedQueue<IGameObject> gObjs = new ConcurrentLinkedQueue<IGameObject>();
         int seleccion = fileChooser.showOpenDialog(mGame.getContentPane());
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File fichero = fileChooser.getSelectedFile();
             jArray = FileUtilities.readJsonsFromFile(fichero.getPath());
-            for (int i = 0; i < jArray.length(); i++) {
-                JSONObject jObj = jArray.getJSONObject(i);
-                //TODO: Load objects and repaint  mGame.getObjs().add(jObj);
-                System.out.println(jObj.toString());
-            }
+                for (int i = 0; i < jArray.length(); i++) {
+                    JSONObject jObj = jArray.getJSONObject(i);
+                    String typeLabel = jObj.getString(TypeLabel);
+                    System.out.println(jObj.toString());
+                    //TODO: LOAD
+                    //gObjs.add(GameObjectsJSONFactory.getGameObject(jObj));
+                }
+                mGame.getCanvas().drawObjects(gObjs);
+            
         }
     }
-    
+
     private void handlerViews(Object obj) {
         GameCanvas canvas = mGame.getCanvas();
         if (obj == box) {

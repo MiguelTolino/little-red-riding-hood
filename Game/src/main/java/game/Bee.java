@@ -5,6 +5,7 @@
  */
 package game;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
 import org.json.JSONObject;
 
 /**
@@ -33,6 +34,12 @@ public class Bee extends AbstractGameObject {
     
     public void printBee(){
         System.out.println(this.toJSONObject());
+    }
+    
+    public void moveBee(ConcurrentLinkedQueue<IGameObject> gObjs) {
+        for (IGameObject obj : gObjs){
+        }
+        
     }
 
 }

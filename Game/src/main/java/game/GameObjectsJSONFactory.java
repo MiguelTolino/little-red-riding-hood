@@ -13,28 +13,24 @@ import org.json.JSONObject;
  * @author juanangel
  */
 public class GameObjectsJSONFactory {
-    
+
     public static IGameObject getGameObject(JSONObject jObj) {
-        
+
         IGameObject gObj = null;
-        
+
         String typeLabel = jObj.getString(TypeLabel);
-        
-        if (typeLabel.equals("Blossom")){
+
+        if (typeLabel.equals("Blossom")) {
             gObj = new Blossom(jObj);
-        }
-        else if (typeLabel.equals("Spider")){
+        } else if (typeLabel.equals("Spider")) {
             gObj = new Spider(jObj);
-        }
-        else if (typeLabel.equals("Bee")){
+        } else if (typeLabel.equals("Bee")) {
             gObj = new Bee(jObj);
-        }
-        else if (typeLabel.equals("Fly")){
+        } else if (typeLabel.equals("Fly")) {
             gObj = new Fly(jObj);
-        }
-        else if (typeLabel.equals("RidingHood")){
+        } else if (typeLabel.equals("RidingHood")) {
             gObj = new RidingHood_1(jObj);
-        }        
+        }
         return gObj;
     }
 

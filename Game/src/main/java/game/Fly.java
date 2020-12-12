@@ -35,4 +35,14 @@ public class Fly extends AbstractGameObject{
     public void printFly(){
         System.out.println(this.toJSONObject());
     }
+    
+    public void moveFly(int row) {
+        int x = (int) (Math.random() * row);
+        int y = (int) (Math.random() * row);
+        if (x % 2 == 0 && x < row / 2 && y < row / 2)
+        {
+            this.position.x = x;
+            this.position.y = y;
+        }
+    }
 }
