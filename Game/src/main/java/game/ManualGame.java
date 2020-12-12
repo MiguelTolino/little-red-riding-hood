@@ -258,6 +258,10 @@ public class ManualGame extends JFrame implements KeyListener, ActionListener {
     public Timer getTimer() {
         return (timer);
     }
+    
+    public GameCanvas getCanvas() {
+        return (canvas);
+    }
 
     public static void main(String[] args) throws Exception {
         ManualGame gui = new ManualGame();

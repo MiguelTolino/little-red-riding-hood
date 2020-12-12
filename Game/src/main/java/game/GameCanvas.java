@@ -13,6 +13,7 @@ import views.AbstractGameView;
 import views.IAWTGameView;
 import views.IViewFactory;
 import views.boxes.BoxesFactory;
+import views.boxes.CircleFactory;
 import views.icons.IconsFactory;
 
 /**

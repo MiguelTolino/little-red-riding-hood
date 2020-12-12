@@ -19,31 +19,31 @@ import views.IViewFactory;
  *
  * @author juanangel
  */
-public class BoxesFactory implements IViewFactory {
+public class CircleFactory implements IViewFactory {
     
     @Override
     public IAWTGameView getView(IGameObject gObj, int length) throws Exception {
         
-        IAWTGameView view = new VNumberedBox(gObj, length);
+        IAWTGameView view = new VNumberedCircle(gObj, length);
                 
         if (gObj instanceof Fly){
-           view = new VNumberedBox(gObj, length, Color.gray, "Fly"); 
+           view = new VNumberedCircle(gObj, length, Color.gray, "Fly");
         }
         else if (gObj instanceof Bee){
-           view = new VNumberedBox(gObj, length, Color.YELLOW, "Bee"); 
+           view = new VNumberedCircle(gObj, length, Color.YELLOW, "Bee"); 
         }
         else if (gObj instanceof Spider){
-           view = new VNumberedBox(gObj, length, Color.black, "Spider");
+           view = new VNumberedCircle(gObj, length, Color.black, "Spider");
         }
         else if (gObj instanceof RidingHood_1){
-           view = new VNumberedBox(gObj, length, Color.red, "Hood");
+           view = new VNumberedCircle(gObj, length, Color.red, "Hood");
         } 
         else if (gObj instanceof Blossom){
             if (gObj.getValue() < 10){
-                view = new VNumberedBox(gObj, length, Color.pink, "DLion");
+                view = new VNumberedCircle(gObj, length, Color.pink, "DLion");
             }
             else {
-                view = new VNumberedBox(gObj, length, Color.GREEN, "Clover");
+                view = new VNumberedCircle(gObj, length, Color.GREEN, "Clover");
             }
         }
         return view; 

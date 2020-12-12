@@ -4,6 +4,7 @@ import common.FileUtilities;
 import common.IToJsonObject;
 import game.AbstractGameObject;
 import game.AutoGame;
+import game.GameCanvas;
 import game.GameEditor;
 import game.ManualGame;
 import java.awt.Color;
@@ -19,6 +20,10 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import views.boxes.*;
+import views.icons.*;
+import views.rounded.*;
+import views.squared.*;
 
 public class MenuControllerGame extends JMenuBar implements ActionListener {
 
@@ -28,7 +33,7 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
 
     //JMenuBar barraDelMenu;
     JMenu file, view, game, options;
-    JMenuItem save, load, start, stop, square_size, exit;
+    JMenuItem save, load, start, stop, square_size, exit, box, circle, icons, r_clover, s_clover;
     JButton geditor;
 
     public MenuControllerGame(ManualGame mg) {
@@ -99,6 +104,14 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
 
         options.add(square_size);
 
+        view.add(box = new JMenuItem("Box"));
+        box.addActionListener(this);
+        view.add(circle = new JMenuItem("Circle"));
+        circle.addActionListener(this);
+        view.add(icons = new JMenuItem("Icons"));
+        icons.addActionListener(this);
+        
+
         // Le ponemos un borde a la barra de men� y lo a�adimos a la ventana.
         this.setBorder(BorderFactory.createLineBorder(Color.blue));
     }
@@ -129,10 +142,12 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
                 Logger.getLogger(MenuControllerGame.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (evento.getSource() == square_size) {
-            //TODO: Change box size mg.boxSize = Integer.parseInt(JOptionPane.showInputDialog("Insert box size"));
+            int boxSize = Integer.parseInt(JOptionPane.showInputDialog("Insert box size"));
+            mGame.getCanvas().setSquareEdge(boxSize);
         } else if (evento.getSource() == exit) {
             System.exit(0);
         }
+        handlerViews(evento.getSource());
     }
 
     private void saveGame(Timer timer) {
@@ -153,7 +168,7 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         seleccion = fileChooser.showSaveDialog(mGame.getContentPane());
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File fichero = fileChooser.getSelectedFile();
-            //FileUtilities.writeJsonsToFile(Jobjs, file.getName());
+            //TODO: Save File     FileUtilities.writeJsonsToFile(Jobjs, file.getName());
         }
     }
 
@@ -165,18 +180,30 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File fichero = fileChooser.getSelectedFile();
             jArray = FileUtilities.readJsonsFromFile(fichero.getPath());
-            for(int i = 0; i < jArray.length(); i++){
+            for (int i = 0; i < jArray.length(); i++) {
                 JSONObject jObj = jArray.getJSONObject(i);
-                mGame.getObjs().add(jObj);
+                //TODO: Load objects and repaint  mGame.getObjs().add(jObj);
                 System.out.println(jObj.toString());
             }
+        }
+    }
+    
+    private void handlerViews(Object obj) {
+        GameCanvas canvas = mGame.getCanvas();
+        if (obj == box) {
+            canvas.setViewsFamily(new BoxesFactory());
+        }
+        if (obj == circle) {
+            canvas.setViewsFamily(new CircleFactory());
+        }
+        if (obj == icons) {
+            canvas.setViewsFamily(new IconsFactory());
         }
     }
 
 }
 
-
-    class HandlerEvent implements ActionListener {
+class HandlerEvent implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent evento) {
