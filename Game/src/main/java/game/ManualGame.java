@@ -184,7 +184,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
             }
         }
         for (IGameObject gObj : gObjs) {
-            if (gObj instanceof Blossom) {
+            if (gObj instanceof Blossom || gObj instanceof Bee) {
                 end++;
             }
         }
@@ -193,10 +193,10 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         }
         return gObjs.size();
     }
-    
+
     private void clearObjs() {
         for (IGameObject objs : gObjs) {
-            if(!(objs instanceof RidingHood_2)) {
+            if (!(objs instanceof RidingHood_2)) {
                 gObjs.remove(objs);
             }
         }
@@ -251,10 +251,30 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     public void loadNewBoard(int counter) {
         switch (counter) {
             case 0:
-                FirstScreen f1 = new FirstScreen(row, 2, 4);
-                f1.setObjs(gObjs);
+                Screen s1 = new Screen(row, 2, 4, new Fly(), new Blossom());
+                for (int i = 0; i < s1.getN1(); i++) {
+                    Position p1 = new Position((int) ((Math.random() * row)), (int) (Math.random() * row));
+                    s1.getL1().add(new Fly(p1, 10, 10));
+                }
+                for (int i = 0; i < s1.getN2(); i++) {
+                    Position p2 = new Position((int) (Math.random() * row), (int) (Math.random() * row));
+                    s1.getL2().add(new Blossom(p2, (int) (Math.random() * 20), 10));
+                }
+                s1.setObjs(gObjs);
                 break;
             case 1:
+                Screen s2 = new Screen(row, 2, 4, new Bee(), new Blossom());
+                for (int i = 0; i < s2.getN1(); i++) {
+                    Position p1 = new Position((int) ((Math.random() * row)), (int) (Math.random() * row));
+                    s2.getL1().add(new Bee(p1, 10, 10));
+                }
+                for (int i = 0; i < s2.getN2(); i++) {
+                    Position p2 = new Position((int) (Math.random() * row), (int) (Math.random() * row));
+                    s2.getL2().add(new Blossom(p2, (int) (Math.random() * 20), 10));
+                }
+                s2.setObjs(gObjs);
+                break;
+            case 2:
                 String path = "src/main/resources/games/game.txt";
                 System.out.println("Loading objects");
                 JSONArray jArray = FileUtilities.readJsonsFromFile(path);
@@ -267,7 +287,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 }
                 break;
             default:
-                gObjs.add(new Blossom(new Position(2, 2), 10, 10));
+                gObjs.add(new Bee(new Position(3, 2), 10, 10));
                 gObjs.add(new Blossom(new Position(2, 8), 4, 10));
                 gObjs.add(new Blossom(new Position(8, 8), 10, 10));
                 gObjs.add(new Blossom(new Position(8, 2), 4, 10));
@@ -298,9 +318,15 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                     ridingHood.incLifes(-1);
                 }
             } else if (gObj instanceof Bee) {
-
+                ((Bee) gObj).moveBee(gObjs);
+                if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
+                    int value = ridingHood.getValue();
+                    ridingHood.setValue(value - gObj.getValue());
+                }
+                if (gObj.getPosition().getX() >= row || gObj.getPosition().getX() < 0) {
+                    gObjs.remove(gObj);
+                }
             } else if (gObj instanceof Spider) {
-
             }
 
         }

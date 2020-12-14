@@ -5,6 +5,7 @@
  */
 package game;
 
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.json.JSONObject;
 
@@ -37,9 +38,50 @@ public class Bee extends AbstractGameObject {
     }
     
     public void moveBee(ConcurrentLinkedQueue<IGameObject> gObjs) {
-        for (IGameObject obj : gObjs){
-        }
         
+            IGameObject closest = getClosestObject(gObjs);
+            if(closest != null) 
+                moveToNextPosition(closest.getPosition());
+            else {
+                if (position.x > 5)
+                    position.x++;
+                else
+                    position.x--;
+            }
     }
-
-}
+    
+    public void moveToNextPosition(Position pos) {
+        if ((int) (Math.random() * 10) < 4)
+        {
+        if (position.x < pos.getX())
+            position.x++;
+        if (position.x > pos.getX())
+            position.x--;
+        if (position.y < pos.getY())
+            position.y++;
+        if (position.y > pos.getY())
+            position.y --;
+        }
+    }
+    
+    public IGameObject getClosestObject(ConcurrentLinkedQueue<IGameObject> gObjs) {
+        double distance = Double.MAX_VALUE;
+        IGameObject closest = null;
+        for (IGameObject obj : gObjs) {
+            if (obj instanceof Blossom)
+            {
+                double d = distance(position, obj.getPosition());
+                if (distance > d)
+                {
+                    distance = d;
+                    closest = obj;
+                }
+                if (obj.getPosition().isEqual(position))
+                    gObjs.remove(obj);
+            }
+        }
+        return(closest);
+            
+            
+        }
+    }
