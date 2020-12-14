@@ -315,7 +315,8 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
             if (gObj instanceof Fly) {
                 ((Fly) gObj).moveFly(row);
                 if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
-                    ridingHood.incLifes(-1);
+                    int value = ridingHood.getValue();
+                    ridingHood.setValue(value - gObj.getValue());
                 }
             } else if (gObj instanceof Bee) {
                 ((Bee) gObj).moveBee(gObjs);
@@ -327,6 +328,9 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                     gObjs.remove(gObj);
                 }
             } else if (gObj instanceof Spider) {
+                ((Spider) gObj).moveSpider(ridingHood);
+                if(gObj.getPosition().isEqual(ridingHood.getPosition()))
+                    ridingHood.incLifes(-1);
             }
 
         }

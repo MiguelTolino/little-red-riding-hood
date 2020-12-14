@@ -34,6 +34,24 @@ public class Spider extends AbstractGameObject{
     public void printSpider(){
         System.out.println(this.toJSONObject());
     }
+    
+    public void moveSpider(RidingHood_2 rh) {
+        moveToNextPosition(rh.getPosition());
+    }
+    
+     public void moveToNextPosition(Position pos) {
+        if ((int) (Math.random() * 10) < 4)
+        {
+        if (position.x < pos.getX())
+            position.x++;
+        if (position.x > pos.getX())
+            position.x--;
+        if (position.y < pos.getY())
+            position.y++;
+        if (position.y > pos.getY())
+            position.y --;
+        }
+    }
            
 }
 
