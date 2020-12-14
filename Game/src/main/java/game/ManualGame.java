@@ -156,6 +156,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         if (processCell() == 1) {
             screenCounter++;
             ridingHood.incLifes(1);
+            clearObjs();
             loadNewBoard(screenCounter);
         }
 
@@ -172,14 +173,33 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
      */
     private int processCell() {
         Position rhPos = ridingHood.getPosition();
+        int end = 0;
         for (IGameObject gObj : gObjs) {
             if (gObj != ridingHood && rhPos.isEqual(gObj.getPosition())) {
-                int v = ridingHood.getValue() + gObj.getValue();
-                ridingHood.setValue(v);
+                if (gObj instanceof Blossom) {
+                    int v = ridingHood.getValue() + gObj.getValue();
+                    ridingHood.setValue(v);
+                }
                 gObjs.remove(gObj);
             }
         }
+        for (IGameObject gObj : gObjs) {
+            if (gObj instanceof Blossom) {
+                end++;
+            }
+        }
+        if (end == 0) {
+            return (1);
+        }
         return gObjs.size();
+    }
+    
+    private void clearObjs() {
+        for (IGameObject objs : gObjs) {
+            if(!(objs instanceof RidingHood_2)) {
+                gObjs.remove(objs);
+            }
+        }
     }
 
     /*

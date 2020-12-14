@@ -77,7 +77,7 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         geditor.addActionListener(this);
         square_size = new JMenuItem("Square Size(px)");
         square_size.addActionListener(this);
-        exit = new JMenuItem("Exit",  new ImageIcon(IconPath + "exit.png"));
+        exit = new JMenuItem("Exit", new ImageIcon(IconPath + "exit.png"));
         exit.addActionListener(this);
 
         // Creamos un manejador especifico para los botones.   
@@ -92,7 +92,6 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         this.add(view);
         this.add(game);
         this.add(options);
-        this.add(geditor);
 
         // A�adimos elementos a men� 1.
         file.add(save);
@@ -108,11 +107,11 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         game.addSeparator();
         game.add(stop);
         game.addSeparator();
+        game.add(geditor);
 
         options.add(square_size);
 
-       
-        view.add(box = new JMenuItem(("Box"), new ImageIcon(IconPath + "square.png")));
+        view.add(box = new JMenuItem(("Square"), new ImageIcon(IconPath + "square.png")));
         box.addActionListener(this);
         view.add(circle = new JMenuItem(("Circle"), new ImageIcon(IconPath + "circle.png")));
         circle.addActionListener(this);
@@ -176,7 +175,7 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
             jObjs = new JSONObject[gObjs.size()];
             int i = 0;
             for (IGameObject obj : gObjs) {
-                jObjs[i++] = ((IToJsonObject)obj).toJSONObject();
+                jObjs[i++] = ((IToJsonObject) obj).toJSONObject();
             }
         }
         seleccion = fileChooser.showSaveDialog(mGame.getContentPane());
@@ -194,15 +193,15 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File fichero = fileChooser.getSelectedFile();
             jArray = FileUtilities.readJsonsFromFile(fichero.getPath());
-                for (int i = 0; i < jArray.length(); i++) {
-                    JSONObject jObj = jArray.getJSONObject(i);
-                    String typeLabel = jObj.getString(TypeLabel);
-                    System.out.println(jObj.toString());
-                    //TODO: LOAD
-                    //gObjs.add(GameObjectsJSONFactory.getGameObject(jObj));
-                }
-                mGame.getCanvas().drawObjects(gObjs);
-            
+            for (int i = 0; i < jArray.length(); i++) {
+                JSONObject jObj = jArray.getJSONObject(i);
+                String typeLabel = jObj.getString(TypeLabel);
+                System.out.println(jObj.toString());
+                //TODO: LOAD
+                //gObjs.add(GameObjectsJSONFactory.getGameObject(jObj));
+            }
+            mGame.getCanvas().drawObjects(gObjs);
+
         }
     }
 
