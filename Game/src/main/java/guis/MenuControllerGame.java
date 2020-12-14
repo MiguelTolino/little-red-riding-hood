@@ -33,6 +33,7 @@ import views.squared.*;
 public class MenuControllerGame extends JMenuBar implements ActionListener {
 
     private static final long serialVersionUID = 5110341197899182147L;
+    public static final String IconPath = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\";
     private ManualGame mGame;
     private AutoGame aGame;
 
@@ -64,19 +65,19 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
 
         // Creamos entradas de menus y suscribimos la ventana
         // a los eventos producidos en dichas entradas.
-        save = new JMenuItem("Save");
+        save = new JMenuItem("Save", new ImageIcon(IconPath + "save2.png"));
         save.addActionListener(this);
-        load = new JMenuItem("Load");
+        load = new JMenuItem("Load", new ImageIcon(IconPath + "load.png"));
         load.addActionListener(this);
-        start = new JMenuItem("Start");
+        start = new JMenuItem("Start", new ImageIcon(IconPath + "play.png"));
         start.addActionListener(this);
-        stop = new JMenuItem("Stop");
+        stop = new JMenuItem("Stop", new ImageIcon(IconPath + "pause.png"));
         stop.addActionListener(this);
         geditor = new JButton("Game Editor");
         geditor.addActionListener(this);
         square_size = new JMenuItem("Square Size(px)");
         square_size.addActionListener(this);
-        exit = new JMenuItem("Exit");
+        exit = new JMenuItem("Exit",  new ImageIcon(IconPath + "exit.png"));
         exit.addActionListener(this);
 
         // Creamos un manejador especifico para los botones.   
@@ -110,11 +111,12 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
 
         options.add(square_size);
 
-        view.add(box = new JMenuItem("Box"));
+       
+        view.add(box = new JMenuItem(("Box"), new ImageIcon(IconPath + "square.png")));
         box.addActionListener(this);
-        view.add(circle = new JMenuItem("Circle"));
+        view.add(circle = new JMenuItem(("Circle"), new ImageIcon(IconPath + "circle.png")));
         circle.addActionListener(this);
-        view.add(icons = new JMenuItem("Icons"));
+        view.add(icons = new JMenuItem(("Icons"), new ImageIcon(IconPath + "icons.png")));
         icons.addActionListener(this);
 
         // Le ponemos un borde a la barra de men� y lo a�adimos a la ventana.

@@ -1,6 +1,0 @@
-Riding Hood:   Position [0, 0]   |    Lifes: 1   |   Points: 1     |    Mode: 0
-Blossom, [2, 2], value: 10, lifes: 10, mode: 0
-Blossom, [2, 8], value: 4, lifes: 10, mode: 0
-Blossom, [8, 8], value: 10, lifes: 10, mode: 0
-Blossom, [8, 2], value: 4, lifes: 10, mode: 0
-
