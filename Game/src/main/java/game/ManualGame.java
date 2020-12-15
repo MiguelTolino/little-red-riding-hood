@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -22,6 +23,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -155,7 +157,10 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
 
         //BugsMovement
         BugsMovement();
-
+        //Has she any lifes? If don't endgame
+        /*if (checkEndGame() == true) {
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }*/
         // Logic to change to a new screen.
         if (processCell() == 1) {
             screenCounter++;
@@ -322,6 +327,11 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     public GameCanvas getCanvas() {
         return (canvas);
     }
+    
+    public void setBoxSize(int size) {
+        boxSize = size;
+        row = CANVAS_WIDTH / boxSize;
+    }
 
     public static void main(String[] args) throws Exception {
         ManualGame gui = new ManualGame();
@@ -352,5 +362,13 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
             }
 
         }
+    }
+    
+    private boolean checkEndGame() {
+        if(ridingHood.getLifes() == 0) {
+            JOptionPane.showMessageDialog(this, "Sorry!!! You lost all your lifes!!!", "END OF GAME", HEIGHT, img); 
+            return (true);
+        }
+        return false;
     }
 }
