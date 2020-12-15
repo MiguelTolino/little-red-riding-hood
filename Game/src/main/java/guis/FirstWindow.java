@@ -92,9 +92,12 @@ public class FirstWindow extends JFrame {
             icon = new ImageIcon("main/resources/images/play.png", "Play Icon");
 
             setLayout(new GridLayout(3, 1));
-            play = new JButton("Play", icon);
-            game_editor = new JButton("Game Editor");
-            exit = new JButton("Exit Game");
+            play = new JButton("Play", new ImageIcon("src/main/resources/images/play3.png"));
+            play.setHorizontalAlignment(SwingConstants.LEFT);
+            game_editor = new JButton("Game Editor", new ImageIcon("src/main/resources/images/edit.png"));
+            game_editor.setHorizontalAlignment(SwingConstants.LEFT);
+            exit = new JButton("Exit Game", new ImageIcon("src/main/resources/images/exitgame.png"));
+            exit.setHorizontalAlignment(SwingConstants.LEFT);
 
             add(play);
             add(game_editor);

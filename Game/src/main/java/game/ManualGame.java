@@ -56,6 +56,10 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     JLabel dataLabel;
     MenuControllerGame menu;
     ImageIcon img;
+    
+    //Number of enemies and Blossoms
+    private int n_enemies = 1;
+    private int n_blossoms = 4;
 
     // Timer
     Timer timer;
@@ -63,7 +67,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
 
     // Game Variables
     ConcurrentLinkedQueue<IGameObject> gObjs = new ConcurrentLinkedQueue<>();
-    RidingHood_2 ridingHood = new RidingHood_2(new Position(0, 0), 1, 2);
+    RidingHood_2 ridingHood = new RidingHood_2(new Position(0, 0), 1, 1);
     public int screenCounter = 0;
 
     public ManualGame() throws Exception {
@@ -251,7 +255,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     public void loadNewBoard(int counter) {
         switch (counter) {
             case 0:
-                Screen s1 = new Screen(row, 2, 4, new Fly(), new Blossom());
+                Screen s1 = new Screen(row, n_enemies, n_blossoms, new Fly(), new Blossom());
                 for (int i = 0; i < s1.getN1(); i++) {
                     Position p1 = new Position((int) ((Math.random() * row)), (int) (Math.random() * row));
                     s1.getL1().add(new Fly(p1, 10, 10));
@@ -263,7 +267,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 s1.setObjs(gObjs);
                 break;
             case 1:
-                Screen s2 = new Screen(row, 2, 4, new Bee(), new Blossom());
+                Screen s2 = new Screen(row, n_enemies, n_blossoms, new Bee(), new Blossom());
                 for (int i = 0; i < s2.getN1(); i++) {
                     Position p1 = new Position((int) ((Math.random() * row)), (int) (Math.random() * row));
                     s2.getL1().add(new Bee(p1, 10, 10));
@@ -275,6 +279,18 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 s2.setObjs(gObjs);
                 break;
             case 2:
+                Screen s3 = new Screen(row, n_enemies, n_blossoms + 2, new Spider(), new Blossom());
+                for (int i = 0; i < s3.getN1(); i++) {
+                    Position p1 = new Position((int) ((Math.random() * row)), (int) (Math.random() * row));
+                    s3.getL1().add(new Spider(p1, 10, 10));
+                }
+                for (int i = 0; i < s3.getN2(); i++) {
+                    Position p2 = new Position((int) (Math.random() * row), (int) (Math.random() * row));
+                    s3.getL2().add(new Blossom(p2, (int) (Math.random() * 20), 10));
+                }
+                s3.setObjs(gObjs);
+                break;
+            case 3:
                 String path = "src/main/resources/games/game.txt";
                 System.out.println("Loading objects");
                 JSONArray jArray = FileUtilities.readJsonsFromFile(path);
@@ -287,10 +303,11 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 }
                 break;
             default:
-                gObjs.add(new Bee(new Position(3, 2), 10, 10));
-                gObjs.add(new Blossom(new Position(2, 8), 4, 10));
-                gObjs.add(new Blossom(new Position(8, 8), 10, 10));
-                gObjs.add(new Blossom(new Position(8, 2), 4, 10));
+                screenCounter = -1;
+                n_enemies++;
+                n_blossoms++;
+                timer.setDelay(tick -= 25);
+                
         }
     }
 
@@ -329,8 +346,9 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 }
             } else if (gObj instanceof Spider) {
                 ((Spider) gObj).moveSpider(ridingHood);
-                if(gObj.getPosition().isEqual(ridingHood.getPosition()))
+                if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     ridingHood.incLifes(-1);
+                }
             }
 
         }
