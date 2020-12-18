@@ -22,7 +22,7 @@ import views.icons.IconsFactory;
  */
 public class GameCanvas extends JPanel {
       
-    IViewFactory viewFactory = new BoxesFactory();
+    IViewFactory viewFactory = new IconsFactory();
     
     int editCol, editRow;
     int canvasEdge = 400;
