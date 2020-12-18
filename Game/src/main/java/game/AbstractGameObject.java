@@ -7,6 +7,7 @@ package game;
 
 import common.IToJsonObject;
 import java.util.ArrayList;
+import javax.swing.Timer;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +21,9 @@ public abstract class AbstractGameObject implements IGameObject, IToJsonObject{
     int value;
     int lifes = 1;    
     int mode = 0;
+    Timer timer;
+    int tick = 400;
+    
         
     public AbstractGameObject(){
         position = new Position();

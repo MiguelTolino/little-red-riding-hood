@@ -40,7 +40,7 @@ public class Spider extends AbstractGameObject{
     }
     
      public void moveToNextPosition(Position pos) {
-        if ((int) (Math.random() * 10) < 2)
+        //if ((int) (Math.random() * 10) < 2)
         {
         if (position.x < pos.getX())
             position.x++;

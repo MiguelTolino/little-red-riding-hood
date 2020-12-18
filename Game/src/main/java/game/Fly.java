@@ -39,7 +39,7 @@ public class Fly extends AbstractGameObject{
     public void moveFly(int row) {
         int x = (int)(Math.random() * row);
         int y = (int)(Math.random() * row);
-        if ((int) (Math.random() * 10) < 1)
+        //if ((int) (Math.random() * 10) < 1)
         {
             this.position.x = x;
             this.position.y = y;

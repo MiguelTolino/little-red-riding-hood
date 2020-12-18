@@ -58,13 +58,14 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     JLabel dataLabel;
     MenuControllerGame menu;
     ImageIcon img;
-    
+
     //Number of enemies and Blossoms
     private int n_enemies = 1;
     private int n_blossoms = 4;
 
     // Timer
     Timer timer;
+    Timer bug_timer;
     int tick = 200;
 
     // Game Variables
@@ -115,6 +116,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         addKeyListener(this);
         this.setFocusable(true);
         timer = new Timer(tick, this);
+        bug_timer = new Timer(tick * 2, new BugsDelay());
     }
 
     @Override
@@ -128,8 +130,10 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         if (lastKey == SPACE_KEY) {
             if (timer.isRunning()) {
                 timer.stop();
+                bug_timer.stop();
             } else {
                 timer.start();
+                bug_timer.start();
             }
         }
     }
@@ -155,8 +159,9 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         // Check if Caperucita is in board limits
         setInLimits();
 
-        //BugsMovement
-        BugsMovement();
+        //checkBugsPosition
+        checkBugsPosition();
+
         //Has she any lifes? If don't endgame
         /*if (checkEndGame() == true) {
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
@@ -312,7 +317,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 n_enemies++;
                 n_blossoms++;
                 timer.setDelay(tick -= 25);
-                
+
         }
     }
 
@@ -327,7 +332,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     public GameCanvas getCanvas() {
         return (canvas);
     }
-    
+
     public void setBoxSize(int size) {
         boxSize = size;
         row = CANVAS_WIDTH / boxSize;
@@ -337,16 +342,14 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         ManualGame gui = new ManualGame();
     }
 
-    public void BugsMovement() {
+    public void checkBugsPosition() {
         for (IGameObject gObj : gObjs) {
             if (gObj instanceof Fly) {
-                ((Fly) gObj).moveFly(row);
                 if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     int value = ridingHood.getValue();
                     ridingHood.setValue(value - gObj.getValue());
                 }
             } else if (gObj instanceof Bee) {
-                ((Bee) gObj).moveBee(gObjs);
                 if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     int value = ridingHood.getValue();
                     ridingHood.setValue(value - gObj.getValue());
@@ -355,20 +358,34 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                     gObjs.remove(gObj);
                 }
             } else if (gObj instanceof Spider) {
-                ((Spider) gObj).moveSpider(ridingHood);
                 if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     ridingHood.incLifes(-1);
                 }
             }
-
         }
     }
-    
+
     private boolean checkEndGame() {
-        if(ridingHood.getLifes() == 0) {
-            JOptionPane.showMessageDialog(this, "Sorry!!! You lost all your lifes!!!", "END OF GAME", HEIGHT, img); 
+        if (ridingHood.getLifes() == 0) {
+            JOptionPane.showMessageDialog(this, "Sorry!!! You lost all your lifes!!!", "END OF GAME", HEIGHT, img);
             return (true);
         }
         return false;
+    }
+
+    class BugsDelay implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            for (IGameObject gObj : gObjs) {
+                if (gObj instanceof Fly) {
+                    ((Fly) gObj).moveFly(row);
+                } else if (gObj instanceof Bee) {
+                    ((Bee) gObj).moveBee(gObjs);
+                } else if (gObj instanceof Spider) {
+                    ((Spider) gObj).moveSpider(ridingHood);
+                }
+            }
+        }
     }
 }
