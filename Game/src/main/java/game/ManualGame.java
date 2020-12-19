@@ -5,6 +5,7 @@
  */
 package game;
 
+import guis.JPanelBackground;
 import common.FileUtilities;
 import static common.IToJsonObject.TypeLabel;
 import guis.*;
@@ -43,10 +44,13 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     public static final int RIGTH_KEY = 39;
     public static final int LEFT_KEY = 37;
     public static final int SPACE_KEY = 32;
+    
+    public static int nRepeated = 0;
 
     //Resources
     public static final String NAME = "Little Red Riding Hood Game";
     public static final String ICON = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\";
+    public static final String PATH_PANEL = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\forest.jpg";
     int lastKey = RIGTH_KEY;
 
     // Game Panel and 
@@ -54,7 +58,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     int boxSize = 40;
     int row, col;
     GameCanvas canvas;
-    JPanel canvasFrame;
+    JPanelBackground canvasFrame;
     JLabel dataLabel;
     MenuControllerGame menu;
     ImageIcon img;
@@ -62,6 +66,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     //Number of enemies and Blossoms
     private int n_enemies = 1;
     private int n_blossoms = 4;
+    ArrayList<IGameObject> repeated = new ArrayList();
 
     // Timer
     Timer timer;
@@ -89,14 +94,16 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         //dataLabel.setPreferredSize(new Dimension(120, 40));
         dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        canvas = new GameCanvas(CANVAS_WIDTH, boxSize);
+        canvas = new GameCanvas(CANVAS_WIDTH, boxSize, PATH_PANEL);
         canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_WIDTH));
         canvas.setBorder(BorderFactory.createLineBorder(Color.blue));
 
-        canvasFrame = new JPanel();
+        canvasFrame = new JPanelBackground();
+        canvasFrame.setBackground(PATH_PANEL);
         canvasFrame.setPreferredSize(new Dimension(CANVAS_WIDTH + 40, CANVAS_WIDTH));
-        canvasFrame.add(canvas);
-        getContentPane().add(canvasFrame);
+        //canvasFrame.add(canvas);
+        getContentPane().add(canvas);
+        //getContentPane().add(canvasFrame);
         getContentPane().add(dataLabel, BorderLayout.SOUTH);
 
         //Set menu bar
@@ -161,7 +168,6 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
 
         //checkBugsPosition
         checkBugsPosition();
-
         //Has she any lifes? If don't endgame
         /*if (checkEndGame() == true) {
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
@@ -360,6 +366,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
             } else if (gObj instanceof Spider) {
                 if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     ridingHood.incLifes(-1);
+                    repeated.add(gObj);
                 }
             }
         }
