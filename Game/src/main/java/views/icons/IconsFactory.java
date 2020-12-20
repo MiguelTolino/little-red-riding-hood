@@ -6,6 +6,7 @@
 package views.icons;
 
 import game.Bee;
+import game.Block;
 import game.Blossom;
 import game.Fly;
 import game.IGameObject;
@@ -41,6 +42,9 @@ public class IconsFactory implements IViewFactory {
             } else {
                 view = new VIcon(gObj, "src/main/resources/images/clover.png", length);
             }
+        }
+        else if (gObj instanceof Block) {
+            view = new VIcon(gObj, "src/main/resources/images/stone1.png", length);
         }
         return view;
     }

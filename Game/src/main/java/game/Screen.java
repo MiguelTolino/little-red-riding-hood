@@ -5,6 +5,7 @@
  */
 package game;
 
+import static game.ManualGame.ICON;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -68,15 +69,26 @@ public class  Screen <T extends IGameObject, K extends IGameObject> {
 
 
     }
+    
+    public Block generateBlock() {
+        int x = (int) (Math.random() * n_square);
+        int y = (int) (Math.random() * n_square);
+        return (new Block(new Position(x, y)));
+    }
 
     public void setObjs(ConcurrentLinkedQueue<IGameObject> gObjs) {
+        Block b = generateBlock();
         for (int i = 0; i < n1; i++) {
             gObjs.add(l1.get(i));
+            if (b.getPosition().isEqual(l1.get(i).getPosition()))
+                b = generateBlock();
         }
         for (int i = 0; i < n2; i++) {
             gObjs.add(l2.get(i));
+            if (b.getPosition().isEqual(l2.get(i).getPosition()))
+                b = generateBlock();
         }
-
+        gObjs.add(b);
     }
 
 }

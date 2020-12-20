@@ -41,17 +41,17 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     // KeyBoard
     public static final int UP_KEY = 38;
     public static final int DOWN_KEY = 40;
-    public static final int RIGTH_KEY = 39;
+    public static final int RIGHT_KEY = 39;
     public static final int LEFT_KEY = 37;
     public static final int SPACE_KEY = 32;
-    
+
     public static int nRepeated = 0;
 
     //Resources
     public static final String NAME = "Little Red Riding Hood Game";
     public static final String ICON = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\";
-    public static final String PATH_PANEL = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\forest.jpg";
-    int lastKey = RIGTH_KEY;
+    public static final String PATH_PANEL = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\cesped.jpg";
+    int lastKey = RIGHT_KEY;
 
     // Game Panel and 
     public static final int CANVAS_WIDTH = 480;
@@ -235,7 +235,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
             case DOWN_KEY:
                 ridingHood.moveDown();
                 break;
-            case RIGTH_KEY:
+            case RIGHT_KEY:
                 ridingHood.moveRigth();
                 break;
             case LEFT_KEY:
@@ -281,6 +281,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                     s1.getL2().add(new Blossom(p2, (int) (Math.random() * 20), 10));
                 }
                 s1.setObjs(gObjs);
+                
                 break;
             case 1:
                 Screen s2 = new Screen(row, n_enemies, n_blossoms, new Bee(), new Blossom());
@@ -367,6 +368,21 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     ridingHood.incLifes(-1);
                     repeated.add(gObj);
+                }
+            } else if (gObj instanceof Block) {
+                Position block_position = gObj.getPosition();
+                Position riding_position = ridingHood.getPosition();
+                if (lastKey == DOWN_KEY && riding_position.isEqual(block_position)) {
+                    ridingHood.setPosition(new Position(riding_position.getX(), (block_position.getY() - 1)));
+                }
+                if (lastKey == UP_KEY && riding_position.isEqual(block_position)) {
+                    ridingHood.setPosition(new Position(riding_position.getX(), (block_position.getY() + 1)));
+                }
+                if (lastKey == LEFT_KEY && riding_position.isEqual(block_position)) {
+                    ridingHood.setPosition(new Position(riding_position.getX() + 1, (block_position.getY())));
+                }
+                if (lastKey == RIGHT_KEY && riding_position.isEqual(block_position)) {
+                    ridingHood.setPosition(new Position(riding_position.getX() - 1, (block_position.getY())));
                 }
             }
         }
