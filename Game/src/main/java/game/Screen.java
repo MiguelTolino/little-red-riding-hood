@@ -13,7 +13,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author migue
  */
-public class  Screen <T extends IGameObject, K extends IGameObject> {
+public class Screen<T extends IGameObject, K extends IGameObject> {
+
+    Block b[] = new Block[2];
 
     public int getN_square() {
         return n_square;
@@ -67,28 +69,40 @@ public class  Screen <T extends IGameObject, K extends IGameObject> {
         l1 = new ArrayList<T>();
         l2 = new ArrayList<K>();
 
-
     }
-    
+
     public Block generateBlock() {
-        int x = (int) (Math.random() * n_square);
-        int y = (int) (Math.random() * n_square);
-        return (new Block(new Position(x, y)));
+        Block b;
+        int x, y;
+        x = (int) (Math.random() * n_square);
+        y = (int) (Math.random() * n_square);
+        Position p = new Position(x, y);
+        b = new Block(p);
+        return (b);
     }
 
     public void setObjs(ConcurrentLinkedQueue<IGameObject> gObjs) {
-        Block b = generateBlock();
+
+        b[0] = generateBlock();
+        b[1] = generateBlock();
         for (int i = 0; i < n1; i++) {
             gObjs.add(l1.get(i));
-            if (b.getPosition().isEqual(l1.get(i).getPosition()))
-                b = generateBlock();
+            for (int j = 0; j < b.length; j++) {
+                if (b[j].getPosition().isEqual(l1.get(i).getPosition())) {
+                    b[j] = generateBlock();
+                }
+            }
         }
         for (int i = 0; i < n2; i++) {
             gObjs.add(l2.get(i));
-            if (b.getPosition().isEqual(l2.get(i).getPosition()))
-                b = generateBlock();
+            for (int j = 0; j < b.length; j++) {
+                if (b[j].getPosition().isEqual(l2.get(i).getPosition())) {
+                    b[j] = generateBlock();
+                }
+            }
+            gObjs.add(b[0]);
+            gObjs.add(b[1]);
         }
-        gObjs.add(b);
     }
 
 }

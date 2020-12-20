@@ -281,7 +281,6 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                     s1.getL2().add(new Blossom(p2, (int) (Math.random() * 20), 10));
                 }
                 s1.setObjs(gObjs);
-                
                 break;
             case 1:
                 Screen s2 = new Screen(row, n_enemies, n_blossoms, new Bee(), new Blossom());
