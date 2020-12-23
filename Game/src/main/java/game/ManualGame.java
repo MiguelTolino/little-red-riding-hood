@@ -72,7 +72,9 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     Timer timer;
     Timer bug_timer;
     int tick = 200;
-
+    
+    //Music
+    Reproductor music = new Reproductor("C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\sounds\\sonido.wav");
     // Game Variables
     ConcurrentLinkedQueue<IGameObject> gObjs = new ConcurrentLinkedQueue<>();
     RidingHood_2 ridingHood = new RidingHood_2(new Position(0, 0), 1, 1);
