@@ -31,13 +31,15 @@ public class AsyncClient extends JFrame {
     JMenu mSeleccionEjecutor;
     JMenu mFixedPool;
     JMenuItem itThreeThreads, itFiveThreads;
-    JMenuItem itFlexiblePool, itSingleThreaded;
+    JMenuItem itFlexiblePool, itSingleThreaded, itResizablePool;
     
     
     public AsyncClient() throws Exception{
 
         super("Cliente v3");
-                
+        
+        //Set Menu bar
+        setMenuBar();
         getContentPane().setLayout(new GridLayout(1,4));
         
         for (int i = 0; i < client.length; i++){
@@ -60,6 +62,30 @@ public class AsyncClient extends JFrame {
                 Logger.getLogger(AsyncClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+    }
+    
+    private void setMenuBar() {
+        barraMenu = new JMenuBar();
+        this.setJMenuBar(barraMenu);
+        
+        mSeleccionEjecutor = new JMenu("Load File Executor ...");
+        mFixedPool = new JMenu("Fixed Pool");
+        itThreeThreads = new JMenuItem("Three Threads");
+        itFiveThreads = new JMenuItem("Five Threads");
+        itFlexiblePool = new JMenuItem("Flexible Pools");
+        itSingleThreaded = new JMenuItem("Single Threaded");
+        itResizablePool = new JMenuItem("Resizable Pool");
+        
+        barraMenu.add(mSeleccionEjecutor);
+        
+        mSeleccionEjecutor.add(itSingleThreaded);
+        mSeleccionEjecutor.add(mFixedPool);
+        mSeleccionEjecutor.add(itResizablePool);
+        
+        mFixedPool.add(itThreeThreads);
+        mFixedPool.add(itFiveThreads);
+        
         
     }
     
