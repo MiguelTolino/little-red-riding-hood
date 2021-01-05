@@ -40,8 +40,10 @@ public class GameLoadTask extends GameLoader implements Callable<ArrayList<GameF
     public ArrayList<GameFrame> call() throws Exception {
         
         // 1.- Carga los frames de fichero.
+        ArrayList<GameFrame> frames = this.loadFramesFromFile();
         // 2.- Invoca método loadComplete del cliente.
+        this.client.loadComplete(fileName);
         System.out.println("call " + fileName);
-        return null;
+        return frames;
     }     
 }

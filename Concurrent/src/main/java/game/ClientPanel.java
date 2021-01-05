@@ -114,7 +114,7 @@ public class ClientPanel extends JPanel implements ActionListener {
                     txMessages.append("Loading ... " +  sFile + "\n");
                     
                     // Cargamos los datos del fichero.
-                    ArrayList<GameFrame> gFrames = new GameLoader(sFile).loadFramesFromFile();                        
+                    ArrayList<GameFrame> gFrames = new GameLoader(sFile).loadFramesFromFile();                   
                     
                     // Los guardamos en la tabla de juegos
                     downloadedGamesTable.put(sFile, gFrames); 

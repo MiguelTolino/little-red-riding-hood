@@ -7,6 +7,7 @@ package async;
 
 import game.ClientCanvas;
 import game.GameFrame;
+import game.GameLoader;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,11 +15,15 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -56,7 +61,7 @@ public class AsyncClientPanel extends JPanel implements IAsyncLoaderObserver, Ac
     JPanel pnBoard;
     
     // Ejecutor para cargas de ficheros.
-    ExecutorService fileLoader = null;
+    ExecutorService fileLoader = Executors.newSingleThreadExecutor();
     
     // Tabla de juegos cargados en memoria.
     HashMap<String, ArrayList<GameFrame>> downloadedGamesTable = new HashMap<>();
@@ -145,15 +150,15 @@ public class AsyncClientPanel extends JPanel implements IAsyncLoaderObserver, Ac
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == cbFilesToUpload){
             String sFile = (String) cbFilesToUpload.getSelectedItem();
-            if (!downloadedGamesTable.containsKey(sFile)){   
-                System.out.println("Loading " + sFile + "  ");                       
-                txMessages.append("Loading ... " +  sFile + "\n");   
-                
-                // 1.- Modifique el código para solicitar al ejecutor que ejecute 
-                //     tarea para cargar el fichero escogido.
-                Future<ArrayList<GameFrame>> future = null; 
+            if (!downloadedGamesTable.containsKey(sFile)){
+                System.out.println("Loading " + sFile + "  ");                 
+                txMessages.append("Loading ... " +  sFile + "\n");
+                    // 1.- Modifique el código para solicitar al ejecutor que ejecute
+                    //     tarea para cargar el fichero escogido.
+                    Future<ArrayList<GameFrame>> future = fileLoader.submit(new GameLoadTask(this ,sFile));
                     
-                // 2.- Guarde el futuro en pendingRequest asociado al nombre del fichero.
+                    // 2.- Guarde el futuro en pendingRequest asociado al nombre del fichero.
+                    pendingRequests.put(sFile, future);
             }
             else{
                 System.out.println(sFile + " is already loaded");   
