@@ -56,14 +56,7 @@ public class AsyncClient extends JFrame {
 
         // Set default loader for panels.
         ExecutorService fileLoader = Executors.newSingleThreadExecutor();
-        for (AsyncClientPanel panel : client) {
-            try {
-                panel.setLoader(fileLoader);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(AsyncClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
+        setLoaderToPanels();
     }
 
     private void setMenuBar() {
@@ -86,7 +79,7 @@ public class AsyncClient extends JFrame {
 
         mFixedPool.add(itThreeThreads);
         mFixedPool.add(itFiveThreads);
-        
+
         ThreadAction ae = new ThreadAction();
         itSingleThreaded.addActionListener(ae);
         itThreeThreads.addActionListener(ae);
@@ -94,21 +87,35 @@ public class AsyncClient extends JFrame {
         itResizablePool.addActionListener(ae);
     }
     
+    private void setLoaderToPanels() {
+        for (AsyncClientPanel panel : client) {
+                try {
+                    panel.setLoader(fileLoader);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(AsyncClient.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        
+    }
+
     class ThreadAction implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == itSingleThreaded)
+            if (e.getSource() == itSingleThreaded) {
                 fileLoader = Executors.newSingleThreadExecutor();
-            if (e.getSource() == itThreeThreads)
+            }
+            if (e.getSource() == itThreeThreads) {
                 fileLoader = Executors.newFixedThreadPool(3);
-            if (e.getSource() == itFiveThreads)
+            }
+            if (e.getSource() == itFiveThreads) {
                 fileLoader = Executors.newFixedThreadPool(5);
-            if (e.getSource() == itResizablePool)
+            }
+            if (e.getSource() == itResizablePool) {
                 fileLoader = Executors.newCachedThreadPool();
-            //System.out.println();
+            }
+            setLoaderToPanels();
         }
-        
     }
 
     public static void main(String[] args) throws Exception {
