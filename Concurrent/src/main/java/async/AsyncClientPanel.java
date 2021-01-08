@@ -43,8 +43,8 @@ public class AsyncClientPanel extends JPanel implements IAsyncLoaderObserver, Ac
     JLabel lbId;
 
     // Superficie de dibujo.
-    ClientCanvas canvas = new ClientCanvas(320, 16);
-    // ClientCanvasScheduled canvas; // = new ClientCanvasScheduled(320, 16);
+    //ClientCanvas canvas = new ClientCanvas(320, 16);
+     ClientCanvasScheduled canvas = new ClientCanvasScheduled(320, 16);
 
     // Mensajes y trazas.
     JTextArea txMessages;
@@ -90,7 +90,7 @@ public class AsyncClientPanel extends JPanel implements IAsyncLoaderObserver, Ac
         lbFilesToUpload = new JLabel("Load File");
         lbReadyToPlay = new JLabel("See Game");
 
-        canvas = new ClientCanvas(width, squareEdge);
+        canvas = new ClientCanvasScheduled(width, squareEdge);
         canvas.setBorder(BorderFactory.createLineBorder(Color.darkGray));
 
         setLayout(new BorderLayout());
