@@ -55,7 +55,7 @@ public class AsyncClient extends JFrame {
         this.setFocusable(true);
 
         // Set default loader for panels.
-        ExecutorService fileLoader = Executors.newSingleThreadExecutor();
+        fileLoader = Executors.newSingleThreadExecutor();
         setLoaderToPanels();
     }
 
@@ -114,6 +114,7 @@ public class AsyncClient extends JFrame {
             if (e.getSource() == itResizablePool) {
                 fileLoader = Executors.newCachedThreadPool();
             }
+            System.out.println(fileLoader.toString());
             setLoaderToPanels();
         }
     }
