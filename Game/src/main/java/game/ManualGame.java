@@ -51,6 +51,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     public static final String NAME = "Little Red Riding Hood Game";
     public static final String ICON = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\";
     public static final String PATH_PANEL = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\cesped.jpg";
+    public static final String SOUND_PATH = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\sounds\\";
     int lastKey = RIGHT_KEY;
 
     // Game Panel and 
@@ -74,7 +75,8 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     int tick = 200;
     
     //Music
-    Reproductor music = new Reproductor("C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\sounds\\sonido.wav");
+    Reproductor music = new Reproductor(SOUND_PATH + "bosque.wav");
+
     // Game Variables
     ConcurrentLinkedQueue<IGameObject> gObjs = new ConcurrentLinkedQueue<>();
     RidingHood_2 ridingHood = new RidingHood_2(new Position(0, 0), 1, 1);
@@ -140,9 +142,11 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
             if (timer.isRunning()) {
                 timer.stop();
                 bug_timer.stop();
+                music.stop();
             } else {
                 timer.start();
                 bug_timer.start();
+                music.startMusic();
             }
         }
     }
@@ -201,6 +205,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 if (gObj instanceof Blossom) {
                     int v = ridingHood.getValue() + gObj.getValue();
                     ridingHood.setValue(v);
+                    Reproductor sound = new Reproductor(SOUND_PATH + "goal.wav");
                 }
                 gObjs.remove(gObj);
             }
@@ -356,11 +361,13 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     int value = ridingHood.getValue();
                     ridingHood.setValue(value - gObj.getValue());
+                    Reproductor sound = new Reproductor(SOUND_PATH + "grito.wav");
                 }
             } else if (gObj instanceof Bee) {
                 if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     int value = ridingHood.getValue();
                     ridingHood.setValue(value - gObj.getValue());
+                    Reproductor sound = new Reproductor(SOUND_PATH + "grito.wav");
                 }
                 if (gObj.getPosition().getX() >= row || gObj.getPosition().getX() < 0) {
                     gObjs.remove(gObj);
@@ -369,6 +376,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     ridingHood.incLifes(-1);
                     repeated.add(gObj);
+                    Reproductor sound = new Reproductor(SOUND_PATH + "grito.wav");
                 }
             } else if (gObj instanceof Block) {
                 Position block_position = gObj.getPosition();
