@@ -39,6 +39,7 @@ public class AutoGame extends JFrame implements KeyListener, ActionListener {
     public static final int SPACE_KEY = 32;
     int lastKey = DOWN_KEY;
     
+    public static final String BACKGROUND = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\Bosque.jpg";
     // Game Panel and 
     public static final int CANVAS_WIDTH = 480;    
     int boxSize = 40;
@@ -72,7 +73,7 @@ public class AutoGame extends JFrame implements KeyListener, ActionListener {
        //dataLabel.setPreferredSize(new Dimension(120,40));
        dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
       
-       canvas = new GameCanvas(CANVAS_WIDTH, boxSize);
+       canvas = new GameCanvas(CANVAS_WIDTH, boxSize, BACKGROUND);
        canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_WIDTH));
        canvas.setBorder(BorderFactory.createLineBorder(Color.blue));
        

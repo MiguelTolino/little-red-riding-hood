@@ -5,6 +5,7 @@
  */
 package game;
 
+import guis.JPanelBackground;
 import common.FileUtilities;
 import static common.IToJsonObject.TypeLabel;
 import guis.*;
@@ -15,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -22,6 +24,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -38,32 +41,45 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     // KeyBoard
     public static final int UP_KEY = 38;
     public static final int DOWN_KEY = 40;
-    public static final int RIGTH_KEY = 39;
+    public static final int RIGHT_KEY = 39;
     public static final int LEFT_KEY = 37;
     public static final int SPACE_KEY = 32;
+
+    public static int nRepeated = 0;
 
     //Resources
     public static final String NAME = "Little Red Riding Hood Game";
     public static final String ICON = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\";
-    int lastKey = RIGTH_KEY;
+    public static final String PATH_PANEL = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\cesped.jpg";
+    public static final String SOUND_PATH = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\sounds\\";
+    int lastKey = RIGHT_KEY;
 
     // Game Panel and 
     public static final int CANVAS_WIDTH = 480;
     int boxSize = 40;
     int row, col;
     GameCanvas canvas;
-    JPanel canvasFrame;
+    JPanelBackground canvasFrame;
     JLabel dataLabel;
     MenuControllerGame menu;
     ImageIcon img;
 
+    //Number of enemies and Blossoms
+    private int n_enemies = 1;
+    private int n_blossoms = 4;
+    ArrayList<IGameObject> repeated = new ArrayList();
+
     // Timer
     Timer timer;
+    Timer bug_timer;
     int tick = 200;
+    
+    //Music
+    Reproductor music = new Reproductor(SOUND_PATH + "bosque.wav");
 
     // Game Variables
     ConcurrentLinkedQueue<IGameObject> gObjs = new ConcurrentLinkedQueue<>();
-    RidingHood_2 ridingHood = new RidingHood_2(new Position(0, 0), 1, 2);
+    RidingHood_2 ridingHood = new RidingHood_2(new Position(0, 0), 1, 1);
     public int screenCounter = 0;
 
     public ManualGame() throws Exception {
@@ -82,14 +98,16 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         //dataLabel.setPreferredSize(new Dimension(120, 40));
         dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        canvas = new GameCanvas(CANVAS_WIDTH, boxSize);
+        canvas = new GameCanvas(CANVAS_WIDTH, boxSize, PATH_PANEL);
         canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_WIDTH));
         canvas.setBorder(BorderFactory.createLineBorder(Color.blue));
 
-        canvasFrame = new JPanel();
+        canvasFrame = new JPanelBackground();
+        canvasFrame.setBackground(PATH_PANEL);
         canvasFrame.setPreferredSize(new Dimension(CANVAS_WIDTH + 40, CANVAS_WIDTH));
-        canvasFrame.add(canvas);
-        getContentPane().add(canvasFrame);
+        //canvasFrame.add(canvas);
+        getContentPane().add(canvas);
+        //getContentPane().add(canvasFrame);
         getContentPane().add(dataLabel, BorderLayout.SOUTH);
 
         //Set menu bar
@@ -109,6 +127,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         addKeyListener(this);
         this.setFocusable(true);
         timer = new Timer(tick, this);
+        bug_timer = new Timer(tick * 2, new BugsDelay());
     }
 
     @Override
@@ -122,8 +141,12 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         if (lastKey == SPACE_KEY) {
             if (timer.isRunning()) {
                 timer.stop();
+                bug_timer.stop();
+                music.stop();
             } else {
                 timer.start();
+                bug_timer.start();
+                music.startMusic();
             }
         }
     }
@@ -149,9 +172,12 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         // Check if Caperucita is in board limits
         setInLimits();
 
-        //BugsMovement
-        BugsMovement();
-
+        //checkBugsPosition
+        checkBugsPosition();
+        //Has she any lifes? If don't endgame
+        /*if (checkEndGame() == true) {
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }*/
         // Logic to change to a new screen.
         if (processCell() == 1) {
             screenCounter++;
@@ -179,6 +205,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 if (gObj instanceof Blossom) {
                     int v = ridingHood.getValue() + gObj.getValue();
                     ridingHood.setValue(v);
+                    Reproductor sound = new Reproductor(SOUND_PATH + "goal.wav");
                 }
                 gObjs.remove(gObj);
             }
@@ -215,7 +242,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
             case DOWN_KEY:
                 ridingHood.moveDown();
                 break;
-            case RIGTH_KEY:
+            case RIGHT_KEY:
                 ridingHood.moveRigth();
                 break;
             case LEFT_KEY:
@@ -251,7 +278,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     public void loadNewBoard(int counter) {
         switch (counter) {
             case 0:
-                Screen s1 = new Screen(row, 2, 4, new Fly(), new Blossom());
+                Screen s1 = new Screen(row, n_enemies, n_blossoms, new Fly(), new Blossom());
                 for (int i = 0; i < s1.getN1(); i++) {
                     Position p1 = new Position((int) ((Math.random() * row)), (int) (Math.random() * row));
                     s1.getL1().add(new Fly(p1, 10, 10));
@@ -263,7 +290,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 s1.setObjs(gObjs);
                 break;
             case 1:
-                Screen s2 = new Screen(row, 2, 4, new Bee(), new Blossom());
+                Screen s2 = new Screen(row, n_enemies, n_blossoms, new Bee(), new Blossom());
                 for (int i = 0; i < s2.getN1(); i++) {
                     Position p1 = new Position((int) ((Math.random() * row)), (int) (Math.random() * row));
                     s2.getL1().add(new Bee(p1, 10, 10));
@@ -275,6 +302,18 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 s2.setObjs(gObjs);
                 break;
             case 2:
+                Screen s3 = new Screen(row, n_enemies, n_blossoms + 2, new Spider(), new Blossom());
+                for (int i = 0; i < s3.getN1(); i++) {
+                    Position p1 = new Position((int) ((Math.random() * row)), (int) (Math.random() * row));
+                    s3.getL1().add(new Spider(p1, 10, 10));
+                }
+                for (int i = 0; i < s3.getN2(); i++) {
+                    Position p2 = new Position((int) (Math.random() * row), (int) (Math.random() * row));
+                    s3.getL2().add(new Blossom(p2, (int) (Math.random() * 20), 10));
+                }
+                s3.setObjs(gObjs);
+                break;
+            case 3:
                 String path = "src/main/resources/games/game.txt";
                 System.out.println("Loading objects");
                 JSONArray jArray = FileUtilities.readJsonsFromFile(path);
@@ -287,10 +326,11 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 }
                 break;
             default:
-                gObjs.add(new Bee(new Position(3, 2), 10, 10));
-                gObjs.add(new Blossom(new Position(2, 8), 4, 10));
-                gObjs.add(new Blossom(new Position(8, 8), 10, 10));
-                gObjs.add(new Blossom(new Position(8, 2), 4, 10));
+                screenCounter = -1;
+                n_enemies++;
+                n_blossoms++;
+                timer.setDelay(tick -= 25);
+
         }
     }
 
@@ -306,33 +346,78 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         return (canvas);
     }
 
+    public void setBoxSize(int size) {
+        boxSize = size;
+        row = CANVAS_WIDTH / boxSize;
+    }
+
     public static void main(String[] args) throws Exception {
         ManualGame gui = new ManualGame();
     }
 
-    public void BugsMovement() {
+    public void checkBugsPosition() {
         for (IGameObject gObj : gObjs) {
             if (gObj instanceof Fly) {
-                ((Fly) gObj).moveFly(row);
                 if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     int value = ridingHood.getValue();
                     ridingHood.setValue(value - gObj.getValue());
+                    Reproductor sound = new Reproductor(SOUND_PATH + "grito.wav");
                 }
             } else if (gObj instanceof Bee) {
-                ((Bee) gObj).moveBee(gObjs);
                 if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     int value = ridingHood.getValue();
                     ridingHood.setValue(value - gObj.getValue());
+                    Reproductor sound = new Reproductor(SOUND_PATH + "grito.wav");
                 }
                 if (gObj.getPosition().getX() >= row || gObj.getPosition().getX() < 0) {
                     gObjs.remove(gObj);
                 }
             } else if (gObj instanceof Spider) {
-                ((Spider) gObj).moveSpider(ridingHood);
-                if(gObj.getPosition().isEqual(ridingHood.getPosition()))
+                if (gObj.getPosition().isEqual(ridingHood.getPosition())) {
                     ridingHood.incLifes(-1);
+                    repeated.add(gObj);
+                    Reproductor sound = new Reproductor(SOUND_PATH + "grito.wav");
+                }
+            } else if (gObj instanceof Block) {
+                Position block_position = gObj.getPosition();
+                Position riding_position = ridingHood.getPosition();
+                if (lastKey == DOWN_KEY && riding_position.isEqual(block_position)) {
+                    ridingHood.setPosition(new Position(riding_position.getX(), (block_position.getY() - 1)));
+                }
+                if (lastKey == UP_KEY && riding_position.isEqual(block_position)) {
+                    ridingHood.setPosition(new Position(riding_position.getX(), (block_position.getY() + 1)));
+                }
+                if (lastKey == LEFT_KEY && riding_position.isEqual(block_position)) {
+                    ridingHood.setPosition(new Position(riding_position.getX() + 1, (block_position.getY())));
+                }
+                if (lastKey == RIGHT_KEY && riding_position.isEqual(block_position)) {
+                    ridingHood.setPosition(new Position(riding_position.getX() - 1, (block_position.getY())));
+                }
             }
+        }
+    }
 
+    private boolean checkEndGame() {
+        if (ridingHood.getLifes() == 0) {
+            JOptionPane.showMessageDialog(this, "Sorry!!! You lost all your lifes!!!", "END OF GAME", HEIGHT, img);
+            return (true);
+        }
+        return false;
+    }
+
+    class BugsDelay implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            for (IGameObject gObj : gObjs) {
+                if (gObj instanceof Fly) {
+                    ((Fly) gObj).moveFly(row);
+                } else if (gObj instanceof Bee) {
+                    ((Bee) gObj).moveBee(gObjs);
+                } else if (gObj instanceof Spider) {
+                    ((Spider) gObj).moveSpider(ridingHood);
+                }
+            }
         }
     }
 }

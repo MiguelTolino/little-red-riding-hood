@@ -30,9 +30,8 @@ public class Main {
         GameEditor ge;
         AutoGame ag;
         ManualGame mg;
-
         while ((choice = initWindow.getSelection()) < 0) {
-            System.out.println(choice);
+            Thread.sleep(100);
         }
         switch (choice) {
             case 0:

@@ -6,6 +6,7 @@
 package views.icons;
 
 import game.Bee;
+import game.Block;
 import game.Blossom;
 import game.Fly;
 import game.IGameObject;
@@ -28,19 +29,22 @@ public class IconsFactory implements IViewFactory {
         IAWTGameView view = null;
 
         if (gObj instanceof Fly) {
-            view = new VIcon(gObj, "src/main/resources/images/fly.jpg", length);
+            view = new VIcon(gObj, "src/main/resources/images/fly.png", length);
         } else if (gObj instanceof Bee) {
-            view = new VIcon(gObj, "src/main/resources/images/bee.jpg", length);
+            view = new VIcon(gObj, "src/main/resources/images/bee.png", length);
         } else if (gObj instanceof RidingHood_2 || gObj instanceof RidingHood_3) {
-            view = new VIcon(gObj, "src/main/resources/images/caperucita.jpg", length);
+            view = new VIcon(gObj, "src/main/resources/images/red-riding-hood.png", length);
         } else if (gObj instanceof Spider) {
-            view = new VIcon(gObj, "src/main/resources/images/spider.jpg", length);
+            view = new VIcon(gObj, "src/main/resources/images/spider.png", length);
         } else if (gObj instanceof Blossom) {
             if (gObj.getValue() < 10) {
-                view = new VIcon(gObj, "src/main/resources/images/dandelion2.jpg", length);
+                view = new VIcon(gObj, "src/main/resources/images/dandelion.png", length);
             } else {
-                view = new VIcon(gObj, "src/main/resources/images/clover.jpg", length);
+                view = new VIcon(gObj, "src/main/resources/images/clover.png", length);
             }
+        }
+        else if (gObj instanceof Block) {
+            view = new VIcon(gObj, "src/main/resources/images/stone1.png", length);
         }
         return view;
     }

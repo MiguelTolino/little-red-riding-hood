@@ -75,7 +75,7 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         stop.addActionListener(this);
         geditor = new JButton("Game Editor");
         geditor.addActionListener(this);
-        square_size = new JMenuItem("Square Size(px)");
+        square_size = new JMenuItem("Square Size", new ImageIcon(IconPath + "square.png"));
         square_size.addActionListener(this);
         exit = new JMenuItem("Exit", new ImageIcon(IconPath + "exit.png"));
         exit.addActionListener(this);
@@ -155,8 +155,10 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
                 Logger.getLogger(MenuControllerGame.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (evento.getSource() == square_size) {
-            int boxSize = Integer.parseInt(JOptionPane.showInputDialog("Insert box size"));
+            int boxSize = Integer.parseInt(JOptionPane.showInputDialog("Insert box size (px)"));
             mGame.getCanvas().setSquareEdge(boxSize);
+            mGame.setBoxSize(boxSize);
+            mGame.loadNewBoard(mGame.screenCounter);
         } else if (evento.getSource() == exit) {
             System.exit(0);
         }
