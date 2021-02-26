@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package game;
 
 import guis.FirstWindow;
@@ -27,8 +22,6 @@ public class Main {
         //Choose Game
         FirstWindow initWindow = new FirstWindow();
         int choice = -1;
-        GameEditor ge;
-        AutoGame ag;
         ManualGame mg;
         while ((choice = initWindow.getSelection()) < 0) {
             Thread.sleep(100);
@@ -37,14 +30,6 @@ public class Main {
             case 0:
                 System.out.println("Modo manual");
                 mg = new ManualGame();
-                break;
-            case 1:
-                System.out.println("Modo automatico");
-                ag = new AutoGame();
-                break;
-            case 2:
-                System.out.println("Game Editor");
-                ge = new GameEditor();
                 break;
         }
         initWindow.dispatchEvent(new WindowEvent(initWindow, WindowEvent.WINDOW_CLOSING));

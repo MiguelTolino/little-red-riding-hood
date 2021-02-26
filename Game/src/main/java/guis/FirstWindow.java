@@ -9,18 +9,15 @@ import java.awt.event.KeyListener;
 import javax.swing.*;
 import javax.swing.border.*;
 
-/**
- * - Crea una ventana visible. - A�ade dos paneles modelados como clases
- * internas. - En uno de ellos coloca una imagen. - En el otro 6 botones
- * colocados seg�n un GridLayout. - Se utilizan diferentes gestores de dise�o.
- *
- *
- * @author TIC-LSI
- */
+
 public class FirstWindow extends JFrame {
     
 
-    PanelGrafica panelGrafica;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	PanelGrafica panelGrafica;
     PanelButtons panelBotones;
     int selection;
 
@@ -47,9 +44,6 @@ public class FirstWindow extends JFrame {
         panelGrafica = new PanelGrafica();
         panelBotones = new PanelButtons();
 
-        // Creamos bordes y se los a�adimos a los paneles.
-        //panelGrafica.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        // A�adimos paneles a la ventana (a su contentPane).
         getContentPane().add(panelGrafica);
         panelGrafica.add(panelBotones);
     }
@@ -58,13 +52,13 @@ public class FirstWindow extends JFrame {
         FirstWindow gui = new FirstWindow();
     }
 
-    /**
-     * Clase interna: Utiliza layout por defecto.
-     *
-     */
     class PanelGrafica extends JPanel {
 
-        JLabel lb;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		JLabel lb;
         JButton play, game_editor, exit;
 
         // Creamos la imagen a partir de un fichero.
@@ -84,26 +78,30 @@ public class FirstWindow extends JFrame {
 
     class PanelButtons extends JPanel implements ActionListener {
 
-        JButton play, game_editor, exit;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		JButton play, game_editor, exit;
         ImageIcon icon;
 
         public PanelButtons() {
 
             icon = new ImageIcon("main/resources/images/play.png", "Play Icon");
 
-            setLayout(new GridLayout(3, 1));
+            setLayout(new GridLayout(2, 1));
             play = new JButton("Play", new ImageIcon("src/main/resources/images/play3.png"));
             play.setHorizontalAlignment(SwingConstants.LEFT);
-            game_editor = new JButton("Game Editor", new ImageIcon("src/main/resources/images/edit.png"));
-            game_editor.setHorizontalAlignment(SwingConstants.LEFT);
+            /*game_editor = new JButton("Game Editor", new ImageIcon("src/main/resources/images/edit.png"));
+            game_editor.setHorizontalAlignment(SwingConstants.LEFT); */
             exit = new JButton("Exit Game", new ImageIcon("src/main/resources/images/exitgame.png"));
             exit.setHorizontalAlignment(SwingConstants.LEFT);
 
             add(play);
-            add(game_editor);
+            //add(game_editor);
             add(exit);
             play.addActionListener(this);
-            game_editor.addActionListener(this);
+            //game_editor.addActionListener(this);
             exit.addActionListener(this);
         }
 
@@ -111,13 +109,15 @@ public class FirstWindow extends JFrame {
         public void actionPerformed(ActionEvent e) {
             JButton b = (JButton) e.getSource();
             if (b.getText().equals("Play")) {
-                String options[] = {"Manual mode", "Automatic mode"};
-                selection = JOptionPane.showOptionDialog(null, "Choose Game Mode", "Game Mode", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                //String options[] = {"Manual mode", "Automatic mode"};
+                
+            	//selection = JOptionPane.showOptionDialog(null, "Choose Game Mode", "Game Mode", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            	selection = 0;
             }
-            if (b.getText().equals("Game Editor")) {
-                selection = 2;
+           // if (b.getText().equals("Game Editor")) {
+                //selection = 2;
                 //dispose();
-            }
+           // }
             if (b.getText().equals("Exit Game")) {
                 System.exit(0);
             }

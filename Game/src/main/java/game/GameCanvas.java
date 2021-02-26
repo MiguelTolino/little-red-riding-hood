@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package game;
 
 import java.awt.Color;
@@ -18,10 +14,6 @@ import views.boxes.BoxesFactory;
 import views.boxes.CircleFactory;
 import views.icons.IconsFactory;
 
-/**
- *
- * @author juanangel
- */
 public class GameCanvas extends JPanel {
 
     IViewFactory viewFactory = new IconsFactory();

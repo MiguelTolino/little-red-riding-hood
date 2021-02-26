@@ -65,16 +65,16 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
 
         // Creamos entradas de menus y suscribimos la ventana
         // a los eventos producidos en dichas entradas.
-        save = new JMenuItem("Save", new ImageIcon(IconPath + "save2.png"));
-        save.addActionListener(this);
-        load = new JMenuItem("Load", new ImageIcon(IconPath + "load.png"));
-        load.addActionListener(this);
+        //save = new JMenuItem("Save", new ImageIcon(IconPath + "save2.png"));
+        //save.addActionListener(this);
+        //load = new JMenuItem("Load", new ImageIcon(IconPath + "load.png"));
+        //load.addActionListener(this);
         start = new JMenuItem("Start", new ImageIcon(IconPath + "play.png"));
         start.addActionListener(this);
         stop = new JMenuItem("Stop", new ImageIcon(IconPath + "pause.png"));
         stop.addActionListener(this);
-        geditor = new JButton("Game Editor");
-        geditor.addActionListener(this);
+        //geditor = new JButton("Game Editor");
+        //geditor.addActionListener(this);
         square_size = new JMenuItem("Square Size", new ImageIcon(IconPath + "square.png"));
         square_size.addActionListener(this);
         exit = new JMenuItem("Exit", new ImageIcon(IconPath + "exit.png"));
@@ -92,22 +92,22 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         this.add(view);
         this.add(game);
         this.add(options);
-
+/*
         // A�adimos elementos a men� 1.
         file.add(save);
         file.addSeparator();
 
         // A�adimos elementos a men� 3.
         file.add(load);
-        file.addSeparator();
+        file.addSeparator(); */
         file.add(exit);
 
         // A�adimos elementos a men� 2.              
         game.add(start);
         game.addSeparator();
         game.add(stop);
-        game.addSeparator();
-        game.add(geditor);
+        //game.addSeparator();
+       // game.add(geditor);
 
         options.add(square_size);
 
