@@ -17,6 +17,7 @@ import org.json.JSONObject;
 public class RidingHood_2 extends AbstractGameObject {
     
     int dX, dY;
+    int level = 1;
 
     RidingHood_2(Position position) {
         super(position);    
@@ -60,11 +61,15 @@ public class RidingHood_2 extends AbstractGameObject {
     public void moveDown(){
         dY = 1; dX = 0;
     }
+    
+    public void incLevel() {
+    	this.level++;
+    }
 
     @Override
     public String toString() {
         return ("Position [" + position.getX() + ", " + position.getY() + "]   "
-                + "    Lifes: " + lifes + "      Points: " + value);
+                + "    Lifes: " + lifes + "      Points: " + value + "     Level: " + level);
     }
     
     

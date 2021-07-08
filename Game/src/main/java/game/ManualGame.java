@@ -51,6 +51,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
     public static final String NAME = "Little Red Riding Hood Game";
     public static final String ICON = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\";
     public static final String PATH_PANEL = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\cesped.jpg";
+    public static final String PAUSE = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\pause.jpg";
     public static final String SOUND_PATH = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\sounds\\";
     int lastKey = RIGHT_KEY;
 
@@ -143,10 +144,12 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
                 timer.stop();
                 bug_timer.stop();
                 music.stop();
+                canvas.is_pause = true;
             } else {
                 timer.start();
                 bug_timer.start();
                 music.startMusic();
+                canvas.is_pause = false;
             }
         }
     }
@@ -182,6 +185,7 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
         if (processCell() == 1) {
             screenCounter++;
             ridingHood.incLifes(1);
+            ridingHood.incLevel();
             clearObjs();
             loadNewBoard(screenCounter);
         }

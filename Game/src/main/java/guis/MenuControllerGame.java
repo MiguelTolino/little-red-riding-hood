@@ -90,8 +90,8 @@ public class MenuControllerGame extends JMenuBar implements ActionListener {
         // A�adimos elementos a barra de men�.
         this.add(file);
         this.add(view);
-        this.add(game);
-        this.add(options);
+        //this.add(game);
+        //this.add(options);
 /*
         // A�adimos elementos a men� 1.
         file.add(save);

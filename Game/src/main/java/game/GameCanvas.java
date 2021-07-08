@@ -23,6 +23,9 @@ public class GameCanvas extends JPanel {
     int squareEdge = 20;
     boolean squareOn = true;
     private Image background;
+    private Image pause;
+    public boolean is_pause = false;
+    public static final String PAUSE_PATH = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\pause.jpg";
 
     ConcurrentLinkedQueue<IGameObject> gObjects = new ConcurrentLinkedQueue<>();
 
@@ -34,6 +37,7 @@ public class GameCanvas extends JPanel {
         this.canvasEdge = canvasEdge;
         this.setOpaque(false);
         this.background = new ImageIcon(background).getImage();
+        this.pause = new ImageIcon(PAUSE_PATH).getImage();
         repaint();
     }
 
@@ -80,6 +84,9 @@ public class GameCanvas extends JPanel {
         if (this.background != null) {
             g.drawImage(this.background, 0, 0, width, height, null);
         }
+    //    if (this.pause != null && is_pause == true) {
+    //       g.drawImage(this.pause, 0, 0, width, height, null);
+  //  }
         super.paintComponent(g);
         // drawGrid(g);
         for (IGameObject gObj : gObjects) {
