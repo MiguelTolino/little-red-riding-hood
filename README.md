@@ -1,13 +1,14 @@
 # Little Red Riding Hood Game
 
--Este proyecto está realizado para las practicas de PIT (Programación para Ingeniería Telematica).
+- Este proyecto está realizado para las practicas de PIT (Programación para Ingeniería Telematica).
 
--Nosotros, como jugadores, controlamos a Caperucita Roja. El objetivo es coger tantas flores como sea posible evitando a los diferentes enemigos que nos encontraremos por el camino
+- Nosotros, como jugadores, controlamos a Caperucita Roja. El objetivo es coger tantas flores como sea posible evitando a los diferentes enemigos que nos encontraremos por el camino
+- 
 ## Uso
 
 Dentro de la carpeta Game, tenemos el .jar compilado y preparado para ejecutarse, realizamos doble click sobre el y nos abrirá el juego.
 
-¡¡ATENCIÓN!!
+**¡¡ATENCIÓN!!**
 Necesitamos tener instala el JVM para poder ejecutar el archivo
 
 ## Reglas
@@ -22,5 +23,5 @@ Iremos atravesando diferentes niveles en los que se irá incrementando la dificu
 
 ¡Próximamente incluiremos a nuestro enemigo final!
 
-DO NOT FEAR THE WOLF
+***DO NOT FEAR THE WOLF!!!***
 
