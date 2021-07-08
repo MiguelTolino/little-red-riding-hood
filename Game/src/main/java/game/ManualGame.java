@@ -49,10 +49,10 @@ public final class ManualGame extends JFrame implements KeyListener, ActionListe
 
     //Resources
     public static final String NAME = "Little Red Riding Hood Game";
-    public static final String ICON = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\";
-    public static final String PATH_PANEL = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\cesped.jpg";
-    public static final String PAUSE = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\images\\pause.jpg";
-    public static final String SOUND_PATH = "C:\\Users\\migue\\UPCT\\PIT\\practicas\\Game\\src\\main\\resources\\sounds\\";
+    public static final String ICON = "src\\main\\resources\\images\\";
+    public static final String PATH_PANEL = "src\\main\\resources\\images\\cesped.jpg";
+    public static final String PAUSE = "src\\main\\resources\\images\\pause.jpg";
+    public static final String SOUND_PATH = "src\\main\\resources\\sounds\\";
     int lastKey = RIGHT_KEY;
 
     // Game Panel and 
