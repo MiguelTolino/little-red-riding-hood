@@ -8,6 +8,9 @@
 
 Dentro de la carpeta Game, tenemos el .jar compilado y preparado para ejecutarse, realizamos doble click sobre el y nos abrirá el juego.
 
+***PRESS SPACE TO START!***
+*PRESS AGAIN TO PAUSE GAME!*
+
 **¡¡ATENCIÓN!!**
 **Necesitamos tener instala la JVM para poder ejecutar el archivo**
 
